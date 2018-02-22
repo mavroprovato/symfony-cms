@@ -12,19 +12,21 @@
     {% endblock %}
 </head>
 <body>
-{% block header %}
-    <div class="container">
-        {{ include('header.html.twig') }}
+<div class="container">
+    {% block header %}
+    {{ include('header.html.twig') }}
 
-        {{ include('navigation.html.twig') }}
-    </div>
-{% endblock %}
-{% block body %}{% endblock %}
+    {{ include('navigation.html.twig') }}
+    {% endblock %}
+</div>
+<main role="main" class="container">
+    {% block body %}{% endblock %}
+</main>
+<footer class="blog-footer">
 {% block footer %}
-    <footer class="blog-footer">
-        {{ include('footer.html.twig') }}
-    </footer>
+    {{ include('footer.html.twig') }}
 {% endblock %}
+</footer>
 {% block javascripts %}
     <script src="{{ asset('build/js/app.js') }}"></script>
 {% endblock %}
