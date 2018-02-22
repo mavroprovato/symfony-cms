@@ -12,7 +12,19 @@
     {% endblock %}
 </head>
 <body>
+{% block header %}
+    <div class="container">
+        {{ include('header.html.twig') }}
+
+        {{ include('navigation.html.twig') }}
+    </div>
+{% endblock %}
 {% block body %}{% endblock %}
+{% block footer %}
+    <footer class="blog-footer">
+        {{ include('footer.html.twig') }}
+    </footer>
+{% endblock %}
 {% block javascripts %}
     <script src="{{ asset('build/js/app.js') }}"></script>
 {% endblock %}
