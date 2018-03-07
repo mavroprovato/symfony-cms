@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,13 +29,11 @@ class Content
 
     /**
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
 
