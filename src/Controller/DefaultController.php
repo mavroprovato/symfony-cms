@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends Controller
@@ -19,7 +18,7 @@ class DefaultController extends Controller
     public function index()
     {
         $repository = $this->getDoctrine()->getRepository(Content::class);
-        $contents = $repository->findBy([], ['createdAt' => 'DESC'], 10);
+        $contents = $repository->findBy([], ['publishedAt' => 'DESC'], 10);
 
         return $this->render('index.html.twig', ['contents' => $contents]);
     }

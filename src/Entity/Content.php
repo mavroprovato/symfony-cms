@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Content
 {
     /**
+     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -18,29 +19,39 @@ class Content
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=256)
      */
     private $title;
 
     /**
+     * @var string
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $publishedAt;
+
+    /**
      * @return integer
      */
-    public function getId()
+    public function getId(): integer
     {
         return $this->id;
     }
@@ -48,7 +59,7 @@ class Content
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -107,6 +118,22 @@ class Content
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublishedAt(): \DateTime
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * @param \DateTime $publishedAt
+     */
+    public function setPublishedAt(\DateTime $publishedAt): void
+    {
+        $this->publishedAt = $publishedAt;
     }
 
     /**
