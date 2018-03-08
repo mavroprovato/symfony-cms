@@ -40,7 +40,11 @@ class GenerateDataCommand extends Command
         $this
             ->setName('cms:generate-data')
             ->setDescription('Generate test data for the system')
-            ->addOption('--count', '-c', InputOption::VALUE_OPTIONAL, 'The number of content items to create', 100);
+            ->addOption('--count', '-c', InputOption::VALUE_OPTIONAL, 'The number of content items to create', 100)
+            ->addOption('--start-date', null, InputOption::VALUE_OPTIONAL,
+                'The minimum publication date for the generated items')
+            ->addOption('--end-date', null, InputOption::VALUE_OPTIONAL,
+                'The maximum publication date for the generated items');
     }
 
     /**
@@ -52,19 +56,40 @@ class GenerateDataCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // TODO: get the start/end dates from the arguments
+        $startDate = new \DateTime();
+        $startDate->modify('-1 year');
+        $endDate = new \DateTime();
+
         for ($i = 0; $i < $input->getOption('count'); $i++) {
             $content = new Content();
             $content->setTitle('Test title');
-            $content->setContent('
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-');
+            $content->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+laborum.');
+            $content->setPublishedAt($this->randomDateTime($startDate, $endDate));
 
             $this->entityManager->persist($content);
         }
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * Return a random date between two dates.
+     *
+     * @param \DateTime $startDate The minimum date.
+     * @param \DateTime $endDate The maximum date.
+     * @return \DateTime The random date.
+     */
+    private function randomDateTime(\DateTime $startDate, \DateTime $endDate): \DateTime
+    {
+        $randomTimestamp = mt_rand($startDate->getTimestamp(), $endDate->getTimestamp());
+        $randomDate = new \DateTime();
+        $randomDate->setTimestamp($randomTimestamp);
+
+        return $randomDate;
     }
 }
