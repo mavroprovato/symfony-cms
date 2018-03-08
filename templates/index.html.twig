@@ -51,18 +51,19 @@
         {% for content in contents %}
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ content.title }}</h2>
+                <p class="blog-post-meta">{{ content.publishedAt | date() }}</p>
                 <p>
                     {{ content.content }}
                 </p>
-            </div><!-- /.blog-post -->
+            </div>
         {% endfor %}
 
         <nav class="blog-pagination">
             <a class="btn btn-outline-primary" href="#">Older</a>
             <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
         </nav>
-    </div><!-- /.blog-main -->
+    </div>
 
     {{ include('sidebar.html.twig') }}
-</div><!-- /.row -->
+</div>
 {% endblock %}
