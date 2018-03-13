@@ -2,23 +2,43 @@
 
 namespace App\Controller;
 
-use App\Entity\Content;
+use Doctrine\ORM\EntityManager;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends Controller
 {
 
+    /** @var PaginatorInterface The paginator service */
+    private $paginator;
+
     /**
-     * The default controller.
+     * Create the controller.
+     *
+     * @param PaginatorInterface $paginator The paginator interface.
+     */
+    public function __construct(PaginatorInterface $paginator)
+    {
+        $this->paginator = $paginator;
+    }
+
+    /**
+     * Display the index page.
      *
      * @Route("/")
      * @return string
      */
     public function index()
     {
-        $repository = $this->getDoctrine()->getRepository(Content::class);
-        $contents = $repository->findBy([], ['publishedAt' => 'DESC'], 10);
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery('
+            SELECT c 
+            FROM App\Entity\Content c 
+            ORDER BY c.publishedAt DESC
+        ');
+        $contents = $this->paginator->paginate($query, 1, 10);
 
         return $this->render('index.html.twig', ['contents' => $contents]);
     }
