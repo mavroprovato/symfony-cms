@@ -26,7 +26,7 @@ class DefaultController extends Controller
     /**
      * Display the index page.
      *
-     * @Route("/", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      * @return string
      */
     public function index()
@@ -37,7 +37,7 @@ class DefaultController extends Controller
     /**
      * Display the index page.
      *
-     * @Route("/page/{page}", methods={"GET"}, requirements={"page"="\d+"})
+     * @Route("/page/{page}", name="index_page", methods={"GET"}, requirements={"page"="\d+"})
      * @param string $page The page number.
      * @return string
      */
