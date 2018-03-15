@@ -26,10 +26,22 @@ class DefaultController extends Controller
     /**
      * Display the index page.
      *
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      * @return string
      */
     public function index()
+    {
+        return $this->indexPage('1');
+    }
+
+    /**
+     * Display the index page.
+     *
+     * @Route("/page/{page}", methods={"GET"}, requirements={"page"="\d+"})
+     * @param string $page The page number.
+     * @return string
+     */
+    public function indexPage(string $page)
     {
         /** @var EntityManager $entityManager */
         $entityManager = $this->getDoctrine()->getManager();
@@ -38,7 +50,7 @@ class DefaultController extends Controller
             FROM App\Entity\Content c 
             ORDER BY c.publishedAt DESC
         ');
-        $contents = $this->paginator->paginate($query, 1, 10);
+        $contents = $this->paginator->paginate($query, $page, 10);
 
         return $this->render('index.html.twig', ['contents' => $contents]);
     }
