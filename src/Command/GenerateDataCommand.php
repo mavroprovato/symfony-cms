@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * A command to generate test data
@@ -52,15 +53,46 @@ class GenerateDataCommand extends Command
      *
      * @param InputInterface $input The command input interface.
      * @param OutputInterface $output The command output interface.
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        // TODO: get the start/end dates from the arguments
-        $startDate = new \DateTime();
-        $startDate->modify('-1 year');
-        $endDate = new \DateTime();
+        $io = new SymfonyStyle($input, $output);
+        // Parse the count option
+        if (intval($input->getOption('count')) == 0) {
+            $io->error("Count should be a positive integer");
+            return 1;
+        }
 
+        // Parse the start date option
+        if ($input->getOption('start-date')) {
+            $startDate = \DateTime::createFromFormat('Y-m-d', $input->getOption('start-date'));
+            if (!$startDate) {
+                $io->error("Start date format is not valid (YYYY-MM-DD)");
+                return 1;
+            }
+        } else {
+            $startDate = new \DateTime();
+            $startDate->modify('-1 year');
+        }
+
+        // Parse the end date option
+        if ($input->getOption('end-date')) {
+            $endDate = \DateTime::createFromFormat('Y-m-d', $input->getOption('end-date'));
+            if (!$startDate) {
+                $io->error("End date format is not valid (YYYY-MM-DD)");
+                return 1;
+            }
+        } else {
+            $endDate = new \DateTime();
+        }
+
+        if ($startDate >= $endDate) {
+            $io->error("Start date must be before end date.");
+            return 1;
+        }
+
+        // Generate the content
         for ($i = 0; $i < $input->getOption('count'); $i++) {
             $content = new Content();
             $content->setTitle('Test title');
@@ -73,8 +105,11 @@ laborum.');
 
             $this->entityManager->persist($content);
         }
-
         $this->entityManager->flush();
+
+        $io->writeln("Successfully generated {$input->getOption('count')} content items.");
+
+        return 0;
     }
 
     /**

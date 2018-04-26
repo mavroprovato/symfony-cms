@@ -59,8 +59,17 @@
         {% endfor %}
 
         <nav class="blog-pagination">
-            <a class="btn btn-outline-primary" href="#">Older</a>
+            {% set pagination = contents.paginationData %}
+            {% if pagination.current != pagination.last %}
+            <a class="btn btn-outline-primary" href="{{ path('index_page', {'page': pagination.next}) }}">Older</a>
+            {% else %}
+            <a class="btn btn-outline-secondary disabled" href="#">Older</a>
+            {% endif %}
+            {% if pagination.current != pagination.first %}
+            <a class="btn btn-outline-primary" href="{{ path('index_page', {'page': pagination.previous}) }}">Newer</a>
+            {% else %}
             <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
+            {% endif %}
         </nav>
     </div>
 
