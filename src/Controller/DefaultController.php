@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManager;
+use App\Entity\Content;
+use App\Repository\ContentRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,15 +44,25 @@ class DefaultController extends Controller
      */
     public function indexPage(string $page)
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery('
-            SELECT c 
-            FROM App\Entity\Content c 
-            ORDER BY c.publishedAt DESC
-        ');
-        $contents = $this->paginator->paginate($query, $page, 10);
+        /** @var ContentRepository $contentRepository */
+        $contentRepository = $this->getDoctrine()->getRepository(Content::class);
 
-        return $this->render('index.html.twig', ['contents' => $contents]);
+        // Fetch contents by publication date
+        $contentsQuery = $contentRepository->createQueryBuilder('c')
+            ->orderBy('c.publishedAt', 'DESC')
+            ->getQuery();
+        $contents = $this->paginator->paginate($contentsQuery, $page, 10);
+
+        // Fetch contents per publication month
+        $archiveQuery = $contentRepository->createQueryBuilder('c')
+            ->select('YEAR(c.publishedAt) AS year, MONTH(c.publishedAt) AS month, COUNT(c)')
+            ->groupBy('year, month')
+            ->getQuery();
+        $archives = $archiveQuery->getResult();
+
+        return $this->render('index.html.twig', [
+            'contents' => $contents,
+            'archives' => $archives
+        ]);
     }
 }
