@@ -29,3 +29,5 @@ doctrine:
             datetime_functions:
                 month: DoctrineExtensions\Query\Mysql\Month
                 year: DoctrineExtensions\Query\Mysql\Year
+        hydrators:
+            CountByMonthHydrator: App\Hydrators\CountByMonthHydrator

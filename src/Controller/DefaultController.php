@@ -55,10 +55,12 @@ class DefaultController extends Controller
 
         // Fetch contents per publication month
         $archiveQuery = $contentRepository->createQueryBuilder('c')
-            ->select('YEAR(c.publishedAt) AS year, MONTH(c.publishedAt) AS month, COUNT(c)')
+            ->select('YEAR(c.publishedAt) AS year, MONTH(c.publishedAt) AS month, COUNT(c) as count')
             ->groupBy('year, month')
+            ->addOrderBy('year', 'DESC')
+            ->addOrderBy('month', 'DESC')
             ->getQuery();
-        $archives = $archiveQuery->getResult();
+        $archives = $archiveQuery->getResult('CountByMonthHydrator');
 
         return $this->render('index.html.twig', [
             'contents' => $contents,

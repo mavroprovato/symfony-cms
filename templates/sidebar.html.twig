@@ -9,8 +9,7 @@
         <h4 class="font-italic">Archives</h4>
         <ol class="list-unstyled mb-0">
             {% for archive in archives %}
-            {# TODO: Display month #}
-            <li><a href="#">March 2014</a></li>
+            <li><a href="#">{{ archive.month | date('F Y') }}</a></li>
             {% endfor %}
         </ol>
     </div>
@@ -23,4 +22,4 @@
             <li><a href="#">Facebook</a></li>
         </ol>
     </div>
-</aside><!-- /.blog-sidebar -->
+</aside>
