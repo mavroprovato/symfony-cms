@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Content;
+use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -94,16 +94,16 @@ class GenerateDataCommand extends Command
 
         // Generate the content
         for ($i = 0; $i < $input->getOption('count'); $i++) {
-            $content = new Content();
-            $content->setTitle('Test title');
-            $content->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            $post = new Post();
+            $post->setTitle('Test title');
+            $post->setContent('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
 aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
 nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
 laborum.');
-            $content->setPublishedAt($this->randomDateTime($startDate, $endDate));
+            $post->setPublishedAt($this->randomDateTime($startDate, $endDate));
 
-            $this->entityManager->persist($content);
+            $this->entityManager->persist($post);
         }
         $this->entityManager->flush();
 

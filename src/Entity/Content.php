@@ -5,13 +5,16 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ContentRepository")
+ * @ORM\Entity()
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"post" = "Post", "page" = "Page"})
  * @ORM\HasLifecycleCallbacks()
  */
-class Content
+abstract class Content
 {
     /**
-     * @var integer
+     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,38 +23,38 @@ class Content
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=256)
+     * @ORM\Column(name="title", type="string", length=256)
      */
     private $title;
 
     /**
      * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="content", type="text")
      */
     private $content;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="published_at", type="datetime", nullable=true)
      */
     private $publishedAt;
 
     /**
-     * @return integer
+     * @return int
      */
-    public function getId(): integer
+    public function getId(): int
     {
         return $this->id;
     }
@@ -66,10 +69,13 @@ class Content
 
     /**
      * @param string $title
+     * @return Content
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -82,10 +88,13 @@ class Content
 
     /**
      * @param string $content
+     * @return Content
      */
-    public function setContent(string $content): void
+    public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
     }
 
     /**
@@ -98,10 +107,13 @@ class Content
 
     /**
      * @param \DateTime $createdAt
+     * @return Content
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -114,10 +126,13 @@ class Content
 
     /**
      * @param \DateTime $updatedAt
+     * @return Content
      */
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -130,10 +145,13 @@ class Content
 
     /**
      * @param \DateTime $publishedAt
+     * @return Content
      */
-    public function setPublishedAt(\DateTime $publishedAt): void
+    public function setPublishedAt(\DateTime $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
+
+        return $this;
     }
 
     /**
