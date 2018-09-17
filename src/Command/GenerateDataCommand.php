@@ -3,8 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Post;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,23 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @package App\Command
  */
-class GenerateDataCommand extends Command
+class GenerateDataCommand extends ContainerAwareCommand
 {
-    /** @var EntityManagerInterface The entity manager */
-    private $entityManager;
-
-    /**
-     * Creates the generate data command.
-     *
-     * @param null|string $name The name of the command; passing null means it must be set in configure().
-     * @param EntityManagerInterface $entityManager The entity manager.
-     */
-    public function __construct(?string $name = null, EntityManagerInterface $entityManager)
-    {
-        parent::__construct($name);
-
-        $this->entityManager = $entityManager;
-    }
 
     /**
      * Configure the command.
@@ -54,10 +38,12 @@ class GenerateDataCommand extends Command
      * @param InputInterface $input The command input interface.
      * @param OutputInterface $output The command output interface.
      * @return int
+     * @throws \Doctrine\ORM\ORMException
      */
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io = new SymfonyStyle($input, $output);
+        $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
         // Parse the count option
         if (intval($input->getOption('count')) == 0) {
             $io->error("Count should be a positive integer");
@@ -103,9 +89,9 @@ nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qu
 laborum.');
             $post->setPublishedAt($this->randomDateTime($startDate, $endDate));
 
-            $this->entityManager->persist($post);
+            $entityManager->persist($post);
         }
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         $io->writeln("Successfully generated {$input->getOption('count')} content items.");
 
