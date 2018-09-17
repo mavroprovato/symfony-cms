@@ -7,27 +7,32 @@
     <meta name="author" content="">
     <title>{% block title %}Blog Template for Bootstrap!{% endblock %}</title>
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
-        <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     {% endblock %}
 </head>
 <body>
+{% block header %}
+{{ include('header.html.twig') }}
+{% endblock %}
+
 <div class="container">
-    {% block header %}
-    {{ include('header.html.twig') }}
-    {{ include('navigation.html.twig') }}
-    {% endblock %}
+    <div class="row">
+        <div class="col-md-8">
+            {% block body %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+            {{ include('sidebar.html.twig') }}
+        </div>
+    </div>
 </div>
-<main role="main" class="container">
-    {% block body %}{% endblock %}
-</main>
-<footer class="blog-footer">
+
+<footer class="py-5 bg-dark">
 {% block footer %}
     {{ include('footer.html.twig') }}
 {% endblock %}
 </footer>
 {% block javascripts %}
-    <script src="{{ asset('build/js/app.js') }}"></script>
+    <script src="{{ asset('build/app.js') }}"></script>
 {% endblock %}
 </body>
 </html>
