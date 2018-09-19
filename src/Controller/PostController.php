@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Content;
-use App\Repository\ContentRepository;
+use App\Entity\Post;
+use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class PostController extends Controller
 {
 
     /** @var PaginatorInterface The paginator service */
@@ -32,7 +32,7 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        return $this->indexPage('1');
+        return $this->page('1');
     }
 
     /**
@@ -42,25 +42,17 @@ class DefaultController extends Controller
      * @param string $page The page number.
      * @return string
      */
-    public function indexPage(string $page)
+    public function page(string $page = '1')
     {
-        /** @var ContentRepository $contentRepository */
-        $contentRepository = $this->getDoctrine()->getRepository(Content::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $this->getDoctrine()->getRepository(Post::class);
 
         // Fetch contents by publication date
-        $contentsQuery = $contentRepository->createQueryBuilder('c')
+        $contentsQuery = $postRepository->createQueryBuilder('c')
             ->orderBy('c.publishedAt', 'DESC')
             ->getQuery();
         $contents = $this->paginator->paginate($contentsQuery, $page, 10);
-
-        // Fetch contents per publication month
-        $archiveQuery = $contentRepository->createQueryBuilder('c')
-            ->select('YEAR(c.publishedAt) AS year, MONTH(c.publishedAt) AS month, COUNT(c) as count')
-            ->groupBy('year, month')
-            ->addOrderBy('year', 'DESC')
-            ->addOrderBy('month', 'DESC')
-            ->getQuery();
-        $archives = $archiveQuery->getResult('CountByMonthHydrator');
+        $archives = $postRepository->countByMonth();
 
         return $this->render('index.html.twig', [
             'contents' => $contents,
