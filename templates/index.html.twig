@@ -23,10 +23,10 @@
 <ul class="pagination justify-content-center mb-4">
     {% set pagination = contents.paginationData %}
     <li class="page-item{% if pagination.current == pagination.last %} disabled{% endif %}">
-        <a class="page-link" href="{% if pagination.current == pagination.last %}#{% else %}{{ path('index_page', {'page': pagination.next}) }}{% endif %}">&larr; Older</a>
+        <a class="page-link" href="{% if pagination.current == pagination.last %}#{% else %}{{ path('posts_page', {'page': pagination.next}) }}{% endif %}">&larr; Older</a>
     </li>
     <li class="page-item{% if pagination.current == pagination.first %} disabled{% endif %}">
-        <a class="page-link" href="{% if pagination.current == pagination.first %}#{% else %}{{ path('index_page', {'page': pagination.previous}) }}{% endif %}">Newer &rarr;</a>
+        <a class="page-link" href="{% if pagination.current == pagination.first %}#{% else %}{{ path('posts_page', {'page': pagination.previous}) }}{% endif %}">Newer &rarr;</a>
     </li>
 </ul>
 {% endblock %}
