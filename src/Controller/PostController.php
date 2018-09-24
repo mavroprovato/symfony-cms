@@ -122,7 +122,7 @@ class PostController extends Controller
      */
     public function dayPage(string $page = '1', $year = null, $month = null, $day = null)
     {
-        return $this->render('index.html.twig', $this->postService->list(
+        return $this->render('posts.html.twig', $this->postService->list(
             intval($page),
             $year === null ? null : intval($year),
             $month === null ? null : intval($month),
