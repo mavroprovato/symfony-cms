@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <ul class="list-unstyled mb-0">
                     {% for archive in archives %}
-                    <li><a href="#">{{ archive.month | date('F Y') }}</a></li>
+                    <li><a href="{{ path('posts_date', {'year': archive.month.format('Y'), 'month': archive.month.format('m')}) }}">{{ archive.month | date('F Y') }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
