@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @package App\Controller
  */
-class PostController extends Controller
+class PostListController extends Controller
 {
     /** @var PostService The post service */
     private $postService;
