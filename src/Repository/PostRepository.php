@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PostRepository extends ServiceEntityRepository
 {
-
     /**
      * {@inheritdoc}
      */

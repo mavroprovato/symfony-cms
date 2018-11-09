@@ -11,15 +11,11 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                {% for page in pages %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/">About</a>
+                    <a class="nav-link" href="/">{{ page.title }}</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Contact</a>
-                </li>
+                {% endfor %}
             </ul>
         </div>
     </div>

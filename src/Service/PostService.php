@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Repository\PageRepository;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -15,6 +16,9 @@ class PostService
     /** @var PostRepository The post repository. */
     private $postRepository;
 
+    /** @var PageRepository The page repository. */
+    private $pageRepository;
+
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
@@ -22,11 +26,14 @@ class PostService
      * Create the post service.
      *
      * @param PostRepository $postRepository The post repository.
+     * @param PageRepository $pageRepository The page repository.
      * @param PaginatorInterface $paginator The paginator interface.
      */
-    public function __construct(PostRepository $postRepository, PaginatorInterface $paginator)
+    public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
+                                PaginatorInterface $paginator)
     {
         $this->postRepository = $postRepository;
+        $this->pageRepository = $pageRepository;
         $this->paginator = $paginator;
     }
 
@@ -59,9 +66,11 @@ class PostService
         $query = $queryBuilder->getQuery();
         $contents = $this->paginator->paginate($query, $page, 10);
         $archives = $this->postRepository->countByMonth();
+        $pages = $this->pageRepository->findBy([], ['order' => 'ASC']);
 
         return [
             'contents' => $contents,
+            'pages' => $pages,
             'archives' => $archives
         ];
     }
