@@ -52,7 +52,9 @@ abstract class Content
     private $publishedAt;
 
     /**
-     * @return int
+     * Get the content identifier.
+     *
+     * @return int The content identifier.
      */
     public function getId(): int
     {
@@ -60,7 +62,9 @@ abstract class Content
     }
 
     /**
-     * @return string
+     * Get the content title.
+     *
+     * @return string The content title.
      */
     public function getTitle(): string
     {
@@ -68,8 +72,10 @@ abstract class Content
     }
 
     /**
-     * @param string $title
-     * @return Content
+     * Set the content title.
+     *
+     * @param string $title The content title.
+     * @return Content The content.
      */
     public function setTitle(string $title): self
     {
@@ -79,7 +85,9 @@ abstract class Content
     }
 
     /**
-     * @return string
+     * Get the content.
+     *
+     * @return string The content.
      */
     public function getContent(): string
     {
@@ -87,8 +95,10 @@ abstract class Content
     }
 
     /**
-     * @param string $content
-     * @return Content
+     * Set the content.
+     *
+     * @param string $content The content.
+     * @return Content The content.
      */
     public function setContent(string $content): self
     {
@@ -98,7 +108,9 @@ abstract class Content
     }
 
     /**
-     * @return \DateTime
+     * Get the creation date of the content.
+     *
+     * @return \DateTime The creation date of the content.
      */
     public function getCreatedAt(): \DateTime
     {
@@ -106,8 +118,10 @@ abstract class Content
     }
 
     /**
-     * @param \DateTime $createdAt
-     * @return Content
+     * Set the creation date of the content.
+     *
+     * @param \DateTime $createdAt The creation date of the content.
+     * @return Content The content.
      */
     public function setCreatedAt(\DateTime $createdAt): self
     {
@@ -117,7 +131,9 @@ abstract class Content
     }
 
     /**
-     * @return \DateTime
+     * Get the update date of the content.
+     *
+     * @return \DateTime The update date of the content.
      */
     public function getUpdatedAt(): \DateTime
     {
@@ -125,8 +141,10 @@ abstract class Content
     }
 
     /**
-     * @param \DateTime $updatedAt
-     * @return Content
+     * Set the update date of the content.
+     *
+     * @param \DateTime $updatedAt The update date of the content.
+     * @return Content The content.
      */
     public function setUpdatedAt(\DateTime $updatedAt): self
     {
@@ -136,7 +154,9 @@ abstract class Content
     }
 
     /**
-     * @return \DateTime
+     * Get the publication date of the content.
+     *
+     * @return \DateTime The publication date of the content.
      */
     public function getPublishedAt(): \DateTime
     {
@@ -144,8 +164,10 @@ abstract class Content
     }
 
     /**
-     * @param \DateTime $publishedAt
-     * @return Content
+     * Set the publication date of the content.
+     *
+     * @param \DateTime $publishedAt The publication date of the content.
+     * @return Content The content.
      */
     public function setPublishedAt(\DateTime $publishedAt): self
     {
@@ -155,6 +177,8 @@ abstract class Content
     }
 
     /**
+     * Called before persisting the entity. Set the creation and update date.
+     *
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -164,6 +188,8 @@ abstract class Content
     }
 
     /**
+     * Called before updating the entity. Set the update date.
+     *
      * @ORM\PreUpdate
      */
     public function onPreUpdate()
