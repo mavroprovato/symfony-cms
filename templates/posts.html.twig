@@ -14,7 +14,7 @@
         <a href="#" class="btn btn-primary">Read More &rarr;</a>
     </div>
     <div class="card-footer text-muted">
-        Published at {{ content.publishedAt | date() }}
+        <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ content.publishedAt | date() }}</span>
     </div>
 </div>
 {% endfor %}
