@@ -8,8 +8,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * The post repository
- *
- * @package App
  */
 class PostRepository extends ServiceEntityRepository
 {
