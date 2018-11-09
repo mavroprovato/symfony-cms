@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PostService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -30,9 +31,9 @@ class PostListController extends Controller
      * Display the post list page.
      *
      * @Route("/", name="posts", methods={"GET"})
-     * @return string
+     * @return Response The HTTP response.
      */
-    public function list()
+    public function list(): Response
     {
         return $this->dayPage();
     }
@@ -47,9 +48,10 @@ class PostListController extends Controller
      *     requirements={"page"="\d+"},
      *     defaults={"page"="1"}
      * )
-     * @return string
+     * @param string $page The page number.
+     * @return Response The HTTP response.
      */
-    public function page($page)
+    public function page(string $page): Response
     {
         return $this->dayPage($page);
     }
@@ -64,9 +66,13 @@ class PostListController extends Controller
      *     requirements={"year"="\d+", "month"="\d+", "day"="\d+"},
      *     defaults={"year"=null, "month"=null, "day"=null}
      * )
-     * @return string
+     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
+     * @param string|null $month The publication month for the post to include. If null, include all posts for the
+     * month.
+     * @param string|null $day
+     * @return Response HTTP response
      */
-    public function listDay($year = null, $month = null, $day = null)
+    public function listDay(string $year = null, string $month = null, string $day = null): Response
     {
         return $this->dayPage('1', $year, $month, $day);
     }
@@ -82,9 +88,10 @@ class PostListController extends Controller
      *     defaults={"page"="1", "year"=null}
      * )
      * @param string $page The page number.
-     * @return \Symfony\Component\HttpFoundation\Response The response.
+     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
+     * @return Response The response.
      */
-    public function yearPage(string $page = '1', $year = null)
+    public function yearPage(string $page = '1', string $year = null): Response
     {
         return $this->dayPage($page, $year);
     }
@@ -100,9 +107,12 @@ class PostListController extends Controller
      *     defaults={"page"="1", "year"=null}
      * )
      * @param string $page The page number.
-     * @return \Symfony\Component\HttpFoundation\Response The response.
+     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
+     * @param string|null $month The publication month for the post to include. If null, include all posts for the
+     * month.
+     * @return Response The response.
      */
-    public function monthPage(string $page = '1', $year = null, $month = null)
+    public function monthPage(string $page = '1', string $year = null, string $month = null): Response
     {
         return $this->dayPage($page, $year, $month);
     }
@@ -118,9 +128,14 @@ class PostListController extends Controller
      *     defaults={"page"="1", "year"=null, "month"=null, "day"=null}
      * )
      * @param string $page The page number.
-     * @return \Symfony\Component\HttpFoundation\Response The response.
+     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
+     * @param string|null $month The publication month for the post to include. If null, include all posts for the
+     * month.
+     * @param string|null $day
+     * @return Response The response.
      */
-    public function dayPage(string $page = '1', $year = null, $month = null, $day = null)
+    public function dayPage(string $page = '1', string $year = null, string $month = null, string $day = null)
+            : Response
     {
         return $this->render('posts.html.twig', $this->postService->list(
             intval($page),

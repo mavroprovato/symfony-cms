@@ -39,8 +39,8 @@ class PostService
      * @param int|null $day The day of the posts to include. If null, fetch all posts in the month.
      * @return array The model for the page.
      */
-    public function list(int $page = 1, int $year = null, int $month = null, int $day = null)
-    {dump("page: $page, year: $year, month: $month, day: $day");
+    public function list(int $page = 1, int $year = null, int $month = null, int $day = null): array
+    {
         // Fetch contents by publication date
         $queryBuilder = $this->postRepository->createQueryBuilder('p');
         list($startDate, $endDate) = $this->getStartEnd($year, $month, $day);
@@ -74,7 +74,7 @@ class PostService
      * @param int|null $day The post day. If null, fetch all posts in the month.
      * @return array A two element array, with the start and end @see DateTime for the restriction.
      */
-    private function getStartEnd(int $year = null, int $month = null, int $day = null)
+    private function getStartEnd(int $year = null, int $month = null, int $day = null): array
     {
         $startDate = new \DateTime();
         $startDate->setTime(0, 0);
