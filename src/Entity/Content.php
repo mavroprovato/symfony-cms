@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"post" = "Post", "page" = "Page"})
- * @ORM\HasLifecycleCallbacks()
  */
 abstract class Content
 {
@@ -23,7 +23,7 @@ abstract class Content
 
     /**
      * @var string
-     * @ORM\Column(name="title", type="string", length=256)
+     * @ORM\Column(name="title", type="string")
      */
     private $title;
 
@@ -34,13 +34,22 @@ abstract class Content
     private $content;
 
     /**
+     * @var string
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $slug;
+
+    /**
      * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
@@ -108,6 +117,29 @@ abstract class Content
     }
 
     /**
+     * Get the slug.
+     *
+     * @return string The slug.
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug.
+     *
+     * @param string $slug The slug.
+     * @return Content The content.
+     */
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
      * Get the creation date of the content.
      *
      * @return \DateTime The creation date of the content.
@@ -118,19 +150,6 @@ abstract class Content
     }
 
     /**
-     * Set the creation date of the content.
-     *
-     * @param \DateTime $createdAt The creation date of the content.
-     * @return Content The content.
-     */
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
      * Get the update date of the content.
      *
      * @return \DateTime The update date of the content.
@@ -138,19 +157,6 @@ abstract class Content
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Set the update date of the content.
-     *
-     * @param \DateTime $updatedAt The update date of the content.
-     * @return Content The content.
-     */
-    public function setUpdatedAt(\DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     /**
@@ -174,26 +180,5 @@ abstract class Content
         $this->publishedAt = $publishedAt;
 
         return $this;
-    }
-
-    /**
-     * Called before persisting the entity. Set the creation and update date.
-     *
-     * @ORM\PrePersist
-     */
-    public function onPrePersist()
-    {
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * Called before updating the entity. Set the update date.
-     *
-     * @ORM\PreUpdate
-     */
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime();
     }
 }
