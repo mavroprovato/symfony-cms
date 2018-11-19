@@ -25,7 +25,7 @@ class Post extends Content
     /**
      * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(
-     *     name="post_tags",
+     *     name="post_tag",
      *     joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      * )

@@ -47,6 +47,7 @@ class GenerateTaxonomyCommand extends ContainerAwareCommand
 
             $entityManager->persist($tag);
         }
+        $entityManager->flush();
         $io->writeln('Tags generated');
 
         for ($i = 1; $i <= 5; $i++) {
@@ -56,6 +57,7 @@ class GenerateTaxonomyCommand extends ContainerAwareCommand
 
             $entityManager->persist($category);
         }
+        $entityManager->flush();
         $io->writeln('Categories generated');
 
         return 0;

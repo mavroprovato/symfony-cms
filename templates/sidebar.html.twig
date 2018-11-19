@@ -29,3 +29,19 @@
         </div>
     </div>
 </div>
+<div class="card my-4">
+    <h5 class="card-header">Cateogries</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="list-unstyled mb-0">
+                    {% for category in categories %}
+                    <li>
+                        <a href="#">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
