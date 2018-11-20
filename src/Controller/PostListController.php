@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\PostService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,37 +42,37 @@ class PostListController extends Controller
      *     requirements={"page"="\d+"}
      * )
      * @Route(
-     *     "/{year}",
+     *     path="/{year}",
      *     name="posts_year",
      *     methods={"GET"},
      *     requirements={"year"="\d+"}
      * )
      * @Route(
-     *     "/{year}/page/{page}",
+     *     path="/{year}/page/{page}",
      *     name="posts_year_page",
      *     methods={"GET"},
      *     requirements={"page"="\d+", "year"="\d+"}
      * )
      * @Route(
-     *     "/{year}/{month}",
+     *     path="/{year}/{month}",
      *     name="posts_month",
      *     methods={"GET"},
      *     requirements={"year"="\d+", "month"="\d+"}
      * )
      * @Route(
-     *     "/{year}/{month}/page/{page}",
+     *     path="/{year}/{month}/page/{page}",
      *     name="posts_month_page",
      *     methods={"GET"},
      *     requirements={"page"="\d+", "year"="\d+", "month"="\d+"}
      * )
      * @Route(
-     *     "/{year}/{month}/{day}",
+     *     path="/{year}/{month}/{day}",
      *     name="posts_day",
      *     methods={"GET"},
      *     requirements={"year"="\d+", "month"="\d+", "day"="\d+"}
      * )
      * @Route(
-     *     "/{year}/{month}/{day}/page/{page}",
+     *     path="/{year}/{month}/{day}/page/{page}",
      *     name="posts_day_page",
      *     methods={"GET"},
      *     requirements={"page"="\d+", "year"="\d+", "month"="\d+", "day"="\d+"}
@@ -98,16 +97,17 @@ class PostListController extends Controller
      * Display the post list by category.
      *
      * @Route(
-     *     "/category/{category}",
+     *     path="/category/{category}",
      *     name="posts_category",
+     *     methods={"GET"},
      *     defaults={"page"="1"}
      * )
      * @Route(
-     *     "/category/{category}/page/{page}",
+     *     path="/category/{category}/page/{page}",
      *     name="posts_category_page",
+     *     methods={"GET"},
      *     requirements={"page"="\d+"}
      * )
-     * @Method("GET")
      * @param string $page The page number.
      * @param string $category The category id or slug.
      * @return Response The response.
@@ -123,16 +123,17 @@ class PostListController extends Controller
      * Display the post list by tag.
      *
      * @Route(
-     *     "/tag/{tag}",
+     *     path="/tag/{tag}",
      *     name="posts_tag",
+     *     methods={"GET"},
      *     defaults={"page"="1"}
      * )
      * @Route(
-     *     "/posts/{post}/page/{page}",
+     *     path="/posts/{post}/page/{page}",
      *     name="posts_tag_page",
+     *     methods={"GET"},
      *     requirements={"page"="\d+"}
      * )
-     * @Method("GET")
      * @param string $page The page number.
      * @param string $tag The tag id or slug.
      * @return Response The response.
