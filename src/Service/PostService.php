@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * The Post service
@@ -26,6 +28,9 @@ class PostService
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
+    /** @var FormFactoryInterface The form factory */
+    private $formFactory;
+
     /**
      * Create the post service.
      *
@@ -33,14 +38,17 @@ class PostService
      * @param PageRepository $pageRepository The page repository.
      * @param CategoryRepository $categoryRepository The category repository.
      * @param PaginatorInterface $paginator The paginator interface.
+     * @param FormFactoryInterface $formFactory
      */
     public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
-                                CategoryRepository $categoryRepository, PaginatorInterface $paginator)
+                                CategoryRepository $categoryRepository, PaginatorInterface $paginator,
+                                FormFactoryInterface $formFactory)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
         $this->categoryRepository = $categoryRepository;
         $this->paginator = $paginator;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -142,9 +150,11 @@ class PostService
         } else {
             $post = $this->postRepository->findOneBy(['slug' => $post]);
         }
+        $commentForm = $this->formFactory->create(CommentType::class);
 
         return $this->addCommonModel([
-            'post' => $post
+            'post' => $post,
+            'commentForm' => $commentForm->createView()
         ]);
     }
 

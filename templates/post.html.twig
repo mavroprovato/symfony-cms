@@ -20,4 +20,13 @@
         </div>
     </div>
 {% endfor %}
+<div class="card my-4">
+    <h5 class="card-header">Leave a comment:</h5>
+    <div class="card-body">
+        {{ form_start(commentForm) }}
+            {{ form_widget(commentForm) }}
+        {{ form_end(commentForm) }}
+        <input type="submit" class="btn btn-primary" value="Post Comment" />
+    </div>
+</div>
 {% endblock %}
