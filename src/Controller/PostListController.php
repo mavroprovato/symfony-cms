@@ -118,4 +118,29 @@ class PostListController extends Controller
             intval($page), $category
         ));
     }
+
+    /**
+     * Display the post list by tag.
+     *
+     * @Route(
+     *     "/tag/{tag}",
+     *     name="posts_tag",
+     *     defaults={"page"="1"}
+     * )
+     * @Route(
+     *     "/posts/{post}/page/{page}",
+     *     name="posts_tag_page",
+     *     requirements={"page"="\d+"}
+     * )
+     * @Method("GET")
+     * @param string $page The page number.
+     * @param string $tag The tag id or slug.
+     * @return Response The response.
+     */
+    public function byTag(string $page, string $tag): Response
+    {
+        return $this->render('posts.html.twig', $this->postService->listByTag(
+            intval($page), $tag
+        ));
+    }
 }

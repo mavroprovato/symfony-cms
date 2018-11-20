@@ -104,6 +104,33 @@ class PostService
     }
 
     /**
+     * Returns a post list page by tag.
+     *
+     * @param int $page The category page.
+     * @param string $tag The tag slug or id.
+     * @return array The model for the page.
+     */
+    public function listByTag(int $page, string $tag): array
+    {
+        $queryBuilder = $this->postRepository
+            ->createQueryBuilder('p')
+            ->join('p.tags', 't');
+
+        if (is_numeric($tag)) {
+            $queryBuilder->where('t.id = :tag');
+        } else {
+            $queryBuilder->where('t.slug = :tag');
+        }
+        $queryBuilder
+            ->setParameter('tag', $tag)
+            ->orderBy('p.publishedAt', 'DESC');
+        $query = $queryBuilder->getQuery();
+        $contents = $this->paginator->paginate($query, $page, 10);
+
+        return $this->postListModel($contents);
+    }
+
+    /**
      * Return the model needed to display the post list page.
      *
      * @param PaginationInterface $posts The post list.
