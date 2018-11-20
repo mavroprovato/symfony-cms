@@ -37,7 +37,7 @@
                 <ul class="list-unstyled mb-0">
                     {% for category in categories %}
                     <li>
-                        <a href="#">{{ category.name }}</a>
+                        <a href="{% if category.slug is null%}{{ path('posts_category', {'category': category.id}) }}{% else %}{{ path('posts_category', {'category': category.slug}) }}{% endif %}">{{ category.name }}</a>
                     </li>
                     {% endfor %}
                 </ul>
