@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Repository\CategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
