@@ -83,7 +83,7 @@ class PostListController extends Controller
      * @param string|null $day The post day. If null, all the posts in the day are included.
      * @return Response The HTTP response.
      */
-    public function byDate(string $page = '1', string $year = null, string $month = null, string $day = null): Response
+    public function byDate(string $year = null, string $month = null, string $day = null, string $page = '1'): Response
     {
         return $this->render('posts.html.twig', $this->postService->list(
             intval($page),
@@ -100,7 +100,6 @@ class PostListController extends Controller
      *     path="/category/{category}",
      *     name="posts_category",
      *     methods={"GET"},
-     *     defaults={"page"="1"}
      * )
      * @Route(
      *     path="/category/{category}/page/{page}",
@@ -112,7 +111,7 @@ class PostListController extends Controller
      * @param string $category The category id or slug.
      * @return Response The response.
      */
-    public function byCategory(string $page, string $category): Response
+    public function byCategory(string $category, string $page = '1'): Response
     {
         return $this->render('posts.html.twig', $this->postService->listByCategory(
             intval($page), $category
@@ -126,7 +125,6 @@ class PostListController extends Controller
      *     path="/tag/{tag}",
      *     name="posts_tag",
      *     methods={"GET"},
-     *     defaults={"page"="1"}
      * )
      * @Route(
      *     path="/posts/{post}/page/{page}",
@@ -138,7 +136,7 @@ class PostListController extends Controller
      * @param string $tag The tag id or slug.
      * @return Response The response.
      */
-    public function byTag(string $page, string $tag): Response
+    public function byTag(string $tag, string $page = '1'): Response
     {
         return $this->render('posts.html.twig', $this->postService->listByTag(
             intval($page), $tag
