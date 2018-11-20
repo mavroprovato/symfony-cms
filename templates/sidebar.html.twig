@@ -19,7 +19,7 @@
                 <ul class="list-unstyled mb-0">
                     {% for archive in archives %}
                     <li>
-                        <a href="{{ path('posts_date', {'year': archive.month.format('Y'), 'month': archive.month.format('m')}) }}">
+                        <a href="{{ path('posts_month', {'year': archive.month.format('Y'), 'month': archive.month.format('m')}) }}">
                             {{ archive.month | date('F Y') }} ({{ archive.count }})
                         </a>
                     </li>

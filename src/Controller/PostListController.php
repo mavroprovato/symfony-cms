@@ -31,112 +31,61 @@ class PostListController extends Controller
     /**
      * Display the post list page.
      *
-     * @Route("/", name="posts", methods={"GET"})
-     * @return Response The HTTP response.
-     */
-    public function list(): Response
-    {
-        return $this->dayPage();
-    }
-
-    /**
-     * Display the post list page.
-     *
+     * @Route(
+     *     path="/",
+     *     methods={"GET"},
+     *     name="posts"
+     * )
      * @Route(
      *     path="/page/{page}",
      *     name="posts_page",
      *     methods={"GET"},
-     *     requirements={"page"="\d+"},
-     *     defaults={"page"="1"}
+     *     requirements={"page"="\d+"}
      * )
-     * @param string $page The page number.
-     * @return Response The HTTP response.
-     */
-    public function page(string $page): Response
-    {
-        return $this->dayPage($page);
-    }
-
-    /**
-     * Display the day post list.
-     *
      * @Route(
-     *     path="/{year}/{month}/{day}",
-     *     name="posts_date",
+     *     "/{year}",
+     *     name="posts_year",
      *     methods={"GET"},
-     *     requirements={"year"="\d+", "month"="\d+", "day"="\d+"},
-     *     defaults={"year"=null, "month"=null, "day"=null}
+     *     requirements={"year"="\d+"}
      * )
-     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
-     * @param string|null $month The publication month for the post to include. If null, include all posts for the
-     * month.
-     * @param string|null $day
-     * @return Response HTTP response
-     */
-    public function listDay(string $year = null, string $month = null, string $day = null): Response
-    {
-        return $this->dayPage('1', $year, $month, $day);
-    }
-
-    /**
-     * Display the year page.
-     *
      * @Route(
      *     "/{year}/page/{page}",
      *     name="posts_year_page",
      *     methods={"GET"},
-     *     requirements={"page"="\d+", "year"="\d+"},
-     *     defaults={"page"="1", "year"=null}
+     *     requirements={"page"="\d+", "year"="\d+"}
      * )
-     * @param string $page The page number.
-     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
-     * @return Response The response.
-     */
-    public function yearPage(string $page = '1', string $year = null): Response
-    {
-        return $this->dayPage($page, $year);
-    }
-
-    /**
-     * Display the month page.
-     *
+     * @Route(
+     *     "/{year}/{month}",
+     *     name="posts_month",
+     *     methods={"GET"},
+     *     requirements={"year"="\d+", "month"="\d+"}
+     * )
      * @Route(
      *     "/{year}/{month}/page/{page}",
      *     name="posts_month_page",
      *     methods={"GET"},
-     *     requirements={"page"="\d+", "year"="\d+", "month"="\d+"},
-     *     defaults={"page"="1", "year"=null}
+     *     requirements={"page"="\d+", "year"="\d+", "month"="\d+"}
      * )
-     * @param string $page The page number.
-     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
-     * @param string|null $month The publication month for the post to include. If null, include all posts for the
-     * month.
-     * @return Response The response.
-     */
-    public function monthPage(string $page = '1', string $year = null, string $month = null): Response
-    {
-        return $this->dayPage($page, $year, $month);
-    }
-
-    /**
-     * Display the day page.
-     *
+     * @Route(
+     *     "/{year}/{month}/{day}",
+     *     name="posts_day",
+     *     methods={"GET"},
+     *     requirements={"year"="\d+", "month"="\d+", "day"="\d+"}
+     * )
      * @Route(
      *     "/{year}/{month}/{day}/page/{page}",
      *     name="posts_day_page",
      *     methods={"GET"},
-     *     requirements={"page"="\d+", "year"="\d+", "month"="\d+", "day"="\d+"},
-     *     defaults={"page"="1", "year"=null, "month"=null, "day"=null}
+     *     requirements={"page"="\d+", "year"="\d+", "month"="\d+", "day"="\d+"}
      * )
      * @param string $page The page number.
-     * @param string|null $year The publication year for the post to include. If null, include all posts for the year.
-     * @param string|null $month The publication month for the post to include. If null, include all posts for the
-     * month.
-     * @param string|null $day
-     * @return Response The response.
+     * @param string|null $year The page year. If null, all the posts are included.
+     * @param string|null $month The page month. If null, all the posts in the year are included.
+     * @param string|null $day The post day. If null, all the posts in the day are included.
+     * @return Response The HTTP response.
      */
-    public function dayPage(string $page = '1', string $year = null, string $month = null, string $day = null)
-            : Response {
+    public function byDate(string $page = '1', string $year = null, string $month = null, string $day = null): Response
+    {
         return $this->render('posts.html.twig', $this->postService->list(
             intval($page),
             $year === null ? null : intval($year),
