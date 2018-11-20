@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1 class="mt-4">{{ post.title }}</h1>
+<hr>
+<p>
+    <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ post.publishedAt | date() }}</span>
+</p>
+<hr>
+<span>{{ post.content }}</span>
+<hr>
+<h5>Comments:</h5>
+{% endblock %}

@@ -71,9 +71,11 @@ class PostService
         }
         $queryBuilder = $queryBuilder->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $contents = $this->paginator->paginate($query, $page, 10);
+        $posts = $this->paginator->paginate($query, $page, 10);
 
-        return $this->postListModel($contents);
+        return $this->addCommonModel([
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -98,9 +100,11 @@ class PostService
             ->setParameter('category', $category)
             ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $contents = $this->paginator->paginate($query, $page, 10);
+        $posts = $this->paginator->paginate($query, $page, 10);
 
-        return $this->postListModel($contents);
+        return $this->addCommonModel([
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -125,29 +129,43 @@ class PostService
             ->setParameter('tag', $tag)
             ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $contents = $this->paginator->paginate($query, $page, 10);
+        $posts = $this->paginator->paginate($query, $page, 10);
 
-        return $this->postListModel($contents);
+        return $this->addCommonModel([
+            'posts' => $posts
+        ]);
+    }
+
+    public function post(string $post)
+    {
+        if (is_numeric($post)) {
+            $post = $this->postRepository->findOneBy(['id' => intval($post)]);
+        } else {
+            $post = $this->postRepository->findOneBy(['slug' => $post]);
+        }
+
+        return $this->addCommonModel([
+            'post' => $post
+        ]);
     }
 
     /**
-     * Return the model needed to display the post list page.
+     * Add the common model elements to the page.
      *
-     * @param PaginationInterface $posts The post list.
+     * @param array $model The page model.
      * @return array The page model.
      */
-    private function postListModel(PaginationInterface $posts): array
+    private function addCommonModel(array $model): array
     {
         $pages = $this->pageRepository->findBy([], ['order' => 'ASC']);
         $archives = $this->postRepository->countByMonth();
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
 
-        return [
-            'posts' => $posts,
+        return array_merge($model, [
             'pages' => $pages,
             'archives' => $archives,
             'categories' => $categories
-        ];
+        ]);
     }
 
     /**

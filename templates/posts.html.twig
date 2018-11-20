@@ -8,10 +8,15 @@
 
 {% for post in posts %}
 <div class="card mb-4">
+    {% if post.slug %}
+        {% set postUrl = path('post', {'post': post.slug}) %}
+    {% else %}
+        {% set postUrl = path('post', {'post': post.id}) %}
+    {% endif %}
     <div class="card-body">
-        <h2 class="card-title">{{ post.title }}</h2>
+        <h2 class="card-title"><a href="{{ postUrl }}">{{ post.title }}</a></h2>
         <p class="card-text">{{ post.content }}</p>
-        <a href="#" class="btn btn-primary">Read More &rarr;</a>
+        <a href="{{ postUrl }}" class="btn btn-primary">Read More &rarr;</a>
     </div>
     <div class="card-footer text-muted">
         <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ post.publishedAt | date() }}</span>
