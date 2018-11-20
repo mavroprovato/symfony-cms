@@ -10,4 +10,14 @@
 <span>{{ post.content }}</span>
 <hr>
 <h5>Comments:</h5>
+{% for comment in post.comments %}
+    <div id="comment-{{ comment.id }}" class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
+        <div class="media-body">
+            <h5 class="mt-0">{{ comment.name }}</h5>
+            <h6>{{ comment.createdAt | date() }}</h6>
+            <span>{{ comment.comment }}</span>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}

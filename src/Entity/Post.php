@@ -33,12 +33,18 @@ class Post extends Content
     private $tags;
 
     /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     */
+    private $comments;
+
+    /**
      * Post constructor
      */
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -55,5 +61,13 @@ class Post extends Content
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
