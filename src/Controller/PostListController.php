@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PostService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -135,13 +136,37 @@ class PostListController extends Controller
      * @return Response The response.
      */
     public function dayPage(string $page = '1', string $year = null, string $month = null, string $day = null)
-            : Response
-    {
+            : Response {
         return $this->render('posts.html.twig', $this->postService->list(
             intval($page),
             $year === null ? null : intval($year),
             $month === null ? null : intval($month),
             $day === null ? null : intval($day)
+        ));
+    }
+
+    /**
+     * Display the post list by category.
+     *
+     * @Route(
+     *     "/category/{category}",
+     *     name="posts_category",
+     *     defaults={"page"="1"}
+     * )
+     * @Route(
+     *     "/category/{category}/page/{page}",
+     *     name="posts_category_page",
+     *     requirements={"page"="\d+"}
+     * )
+     * @Method("GET")
+     * @param string $page The page number.
+     * @param string $category The category id or slug.
+     * @return Response The response.
+     */
+    public function byCategory(string $page, string $category): Response
+    {
+        return $this->render('posts.html.twig', $this->postService->listByCategory(
+            intval($page), $category
         ));
     }
 }

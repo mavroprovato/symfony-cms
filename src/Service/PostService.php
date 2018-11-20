@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Repository\CategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
@@ -71,6 +72,45 @@ class PostService
         $queryBuilder = $queryBuilder->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
         $contents = $this->paginator->paginate($query, $page, 10);
+
+        return $this->postListModel($contents);
+    }
+
+    /**
+     * Returns a post list page by category.
+     *
+     * @param int $page The category page.
+     * @param string $category The category slug or id.
+     * @return array The model for the page.
+     */
+    public function listByCategory(int $page, string $category): array
+    {
+        $queryBuilder = $this->postRepository
+                ->createQueryBuilder('p')
+                ->join('p.categories', 'c');
+
+        if (is_numeric($category)) {
+            $queryBuilder->where('c.id = :category');
+        } else {
+            $queryBuilder->where('c.slug = :category');
+        }
+        $queryBuilder
+            ->setParameter('category', $category)
+            ->orderBy('p.publishedAt', 'DESC');
+        $query = $queryBuilder->getQuery();
+        $contents = $this->paginator->paginate($query, $page, 10);
+
+        return $this->postListModel($contents);
+    }
+
+    /**
+     * Return the model needed to display the post list page.
+     *
+     * @param PaginationInterface $contents The post list.
+     * @return array The page model.
+     */
+    private function postListModel(PaginationInterface $contents): array
+    {
         $pages = $this->pageRepository->findBy([], ['order' => 'ASC']);
         $archives = $this->postRepository->countByMonth();
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
@@ -84,7 +124,7 @@ class PostService
     }
 
     /**
-     * Returs the start and dates that should be added to the query that restricts the posts to be fetched.
+     * Returns the start and dates that should be added to the query that restricts the posts to be fetched.
      *
      * @param int|null $year The post year. If null, fetch all posts.
      * @param int|null $month The post month. If null, fetch all posts in the year.
