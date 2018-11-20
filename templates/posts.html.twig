@@ -6,22 +6,22 @@
     <small>Secondary Text</small>
 </h1>
 
-{% for content in contents %}
+{% for post in posts %}
 <div class="card mb-4">
     <div class="card-body">
-        <h2 class="card-title">{{ content.title }}</h2>
-        <p class="card-text">{{ content.content }}</p>
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-text">{{ post.content }}</p>
         <a href="#" class="btn btn-primary">Read More &rarr;</a>
     </div>
     <div class="card-footer text-muted">
-        <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ content.publishedAt | date() }}</span>
+        <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ post.publishedAt | date() }}</span>
     </div>
 </div>
 {% endfor %}
 
 <!-- Pagination -->
 <ul class="pagination justify-content-center mb-4">
-    {% set pagination = contents.paginationData %}
+    {% set pagination = posts.paginationData %}
     <li class="page-item{% if pagination.current == pagination.last %} disabled{% endif %}">
         <a class="page-link" href="{% if pagination.current == pagination.last %}#{% else %}{{ path('posts_page', {'page': pagination.next}) }}{% endif %}">&larr; Older</a>
     </li>

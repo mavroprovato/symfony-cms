@@ -106,17 +106,17 @@ class PostService
     /**
      * Return the model needed to display the post list page.
      *
-     * @param PaginationInterface $contents The post list.
+     * @param PaginationInterface $posts The post list.
      * @return array The page model.
      */
-    private function postListModel(PaginationInterface $contents): array
+    private function postListModel(PaginationInterface $posts): array
     {
         $pages = $this->pageRepository->findBy([], ['order' => 'ASC']);
         $archives = $this->postRepository->countByMonth();
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
 
         return [
-            'contents' => $contents,
+            'posts' => $posts,
             'pages' => $pages,
             'archives' => $archives,
             'categories' => $categories
