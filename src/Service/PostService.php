@@ -2,12 +2,17 @@
 
 namespace App\Service;
 
+use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * The Post service
@@ -25,11 +30,18 @@ class PostService
     /** @var CategoryRepository The category repository. */
     private $categoryRepository;
 
+    /** @var CommentRepository The category repository. */
+    private $commentRepository;
+
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
+    private $router;
+
     /** @var FormFactoryInterface The form factory */
     private $formFactory;
+
+    private $entityManager;
 
     /**
      * Create the post service.
@@ -37,18 +49,24 @@ class PostService
      * @param PostRepository $postRepository The post repository.
      * @param PageRepository $pageRepository The page repository.
      * @param CategoryRepository $categoryRepository The category repository.
+     * @param CommentRepository $commentyRepository The comment repository.
      * @param PaginatorInterface $paginator The paginator interface.
+     * @param RouterInterface $router
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
-                                CategoryRepository $categoryRepository, PaginatorInterface $paginator,
-                                FormFactoryInterface $formFactory)
+                                CategoryRepository $categoryRepository, CommentRepository $commentyRepository,
+                                PaginatorInterface $paginator, RouterInterface $router,
+                                FormFactoryInterface $formFactory, EntityManagerInterface $entityManager)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->commentRepository = $commentyRepository;
         $this->paginator = $paginator;
+        $this->router = $router;
         $this->formFactory = $formFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -143,6 +161,20 @@ class PostService
         ]);
     }
 
+    public function postComment(int $postId, Comment $comment)
+    {
+        $post = $this->postRepository->find($postId);
+        $comment->setPost($post);
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Return the model of the post page.
+     *
+     * @param string $post The post slug or id.
+     * @return array The model for the page.
+     */
     public function post(string $post)
     {
         if (is_numeric($post)) {
@@ -150,7 +182,9 @@ class PostService
         } else {
             $post = $this->postRepository->findOneBy(['slug' => $post]);
         }
-        $commentForm = $this->formFactory->create(CommentType::class);
+        $commentForm = $this->formFactory->create(CommentType::class, new Comment(), [
+            'action' => $this->router->generate('post_comment', ['postId' => $post->getId()])
+        ]);
 
         return $this->addCommonModel([
             'post' => $post,

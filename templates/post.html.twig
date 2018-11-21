@@ -25,8 +25,9 @@
     <div class="card-body">
         {{ form_start(commentForm) }}
             {{ form_widget(commentForm) }}
+
+            <input type="submit" class="btn btn-primary" value="Post Comment" />
         {{ form_end(commentForm) }}
-        <input type="submit" class="btn btn-primary" value="Post Comment" />
     </div>
 </div>
 {% endblock %}

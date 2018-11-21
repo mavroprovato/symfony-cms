@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Comment on a post
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
 {
@@ -34,13 +34,13 @@ class Comment
 
     /**
      * @var string
-     * @ORM\Column(name="email", type="string")
+     * @ORM\Column(name="email", type="string", nullable=true)
      */
     private $email;
 
     /**
      * @var string
-     * @ORM\Column(name="web_site", type="string")
+     * @ORM\Column(name="web_site", type="string", nullable=true)
      */
     private $webSite;
 
@@ -69,7 +69,7 @@ class Comment
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,7 +77,7 @@ class Comment
     /**
      * @return string
      */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -96,7 +96,7 @@ class Comment
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -115,7 +115,7 @@ class Comment
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -134,7 +134,7 @@ class Comment
     /**
      * @return string
      */
-    public function getWebSite(): string
+    public function getWebSite(): ?string
     {
         return $this->webSite;
     }
