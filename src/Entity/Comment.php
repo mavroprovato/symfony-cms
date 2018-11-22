@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Comment on a post
  *
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\Entity()
  */
 class Comment
 {

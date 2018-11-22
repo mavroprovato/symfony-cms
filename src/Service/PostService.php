@@ -6,7 +6,6 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CategoryRepository;
-use App\Repository\CommentRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,9 +30,6 @@ class PostService
     /** @var CategoryRepository The category repository. */
     private $categoryRepository;
 
-    /** @var CommentRepository The category repository. */
-    private $commentRepository;
-
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
@@ -52,21 +48,19 @@ class PostService
      * @param PostRepository $postRepository The post repository.
      * @param PageRepository $pageRepository The page repository.
      * @param CategoryRepository $categoryRepository The category repository.
-     * @param CommentRepository $commentRepository The comment repository.
      * @param PaginatorInterface $paginator The paginator interface.
      * @param RouterInterface $router The router.
      * @param FormFactoryInterface $formFactory The form factory.
      * @param EntityManagerInterface $entityManager The entity manager.
      */
     public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
-                                CategoryRepository $categoryRepository, CommentRepository $commentRepository,
-                                PaginatorInterface $paginator, RouterInterface $router,
-                                FormFactoryInterface $formFactory, EntityManagerInterface $entityManager)
+                                CategoryRepository $categoryRepository, PaginatorInterface $paginator,
+                                RouterInterface $router, FormFactoryInterface $formFactory,
+                                EntityManagerInterface $entityManager)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->commentRepository = $commentRepository;
         $this->paginator = $paginator;
         $this->router = $router;
         $this->formFactory = $formFactory;
