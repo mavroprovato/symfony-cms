@@ -3,15 +3,16 @@
 namespace App\Service;
 
 use App\Entity\Comment;
+use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -36,11 +37,13 @@ class PostService
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
+    /** @var RouterInterface The router. */
     private $router;
 
-    /** @var FormFactoryInterface The form factory */
+    /** @var FormFactoryInterface The form factory. */
     private $formFactory;
 
+    /** @var EntityManagerInterface The entity manager. */
     private $entityManager;
 
     /**
@@ -49,20 +52,21 @@ class PostService
      * @param PostRepository $postRepository The post repository.
      * @param PageRepository $pageRepository The page repository.
      * @param CategoryRepository $categoryRepository The category repository.
-     * @param CommentRepository $commentyRepository The comment repository.
+     * @param CommentRepository $commentRepository The comment repository.
      * @param PaginatorInterface $paginator The paginator interface.
-     * @param RouterInterface $router
-     * @param FormFactoryInterface $formFactory
+     * @param RouterInterface $router The router.
+     * @param FormFactoryInterface $formFactory The form factory.
+     * @param EntityManagerInterface $entityManager The entity manager.
      */
     public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
-                                CategoryRepository $categoryRepository, CommentRepository $commentyRepository,
+                                CategoryRepository $categoryRepository, CommentRepository $commentRepository,
                                 PaginatorInterface $paginator, RouterInterface $router,
                                 FormFactoryInterface $formFactory, EntityManagerInterface $entityManager)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->commentRepository = $commentyRepository;
+        $this->commentRepository = $commentRepository;
         $this->paginator = $paginator;
         $this->router = $router;
         $this->formFactory = $formFactory;
@@ -77,6 +81,7 @@ class PostService
      * @param int|null $month The month of the posts to include. If null, fetch all posts in the year.
      * @param int|null $day The day of the posts to include. If null, fetch all posts in the month.
      * @return array The model for the page.
+     * @throws \Exception
      */
     public function list(int $page = 1, int $year = null, int $month = null, int $day = null): array
     {
@@ -161,9 +166,19 @@ class PostService
         ]);
     }
 
-    public function postComment(int $postId, Comment $comment)
+    /**
+     * Post a comment to a post.
+     *
+     * @param int $postId The post identifier.
+     * @param Comment $comment The comment.
+     */
+    public function postComment(int $postId, Comment $comment): void
     {
+        /** @var Post $post */
         $post = $this->postRepository->find($postId);
+        if ($post === null) {
+            throw new NotFoundHttpException("Post with id {$postId} not found.");
+        }
         $comment->setPost($post);
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
@@ -187,8 +202,7 @@ class PostService
         ]);
 
         return $this->addCommonModel([
-            'post' => $post,
-            'commentForm' => $commentForm->createView()
+            'post' => $post, 'commentForm' => $commentForm->createView()
         ]);
     }
 
@@ -205,9 +219,7 @@ class PostService
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
 
         return array_merge($model, [
-            'pages' => $pages,
-            'archives' => $archives,
-            'categories' => $categories
+            'pages' => $pages, 'archives' => $archives, 'categories' => $categories
         ]);
     }
 
@@ -218,6 +230,7 @@ class PostService
      * @param int|null $month The post month. If null, fetch all posts in the year.
      * @param int|null $day The post day. If null, fetch all posts in the month.
      * @return array A two element array, with the start and end @see DateTime for the restriction.
+     * @throws \Exception
      */
     private function getStartEnd(int $year = null, int $month = null, int $day = null): array
     {
