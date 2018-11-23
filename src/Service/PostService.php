@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DBAL\Types\ContentStatusType;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
@@ -93,7 +94,10 @@ class PostService
             $queryBuilder->setParameter('startDate', $startDate);
             $queryBuilder->setParameter('endDate', $endDate);
         }
-        $queryBuilder = $queryBuilder->orderBy('p.publishedAt', 'DESC');
+        $queryBuilder = $queryBuilder
+            ->andWhere('p.status = :status')
+            ->setParameter('status', ContentStatusType::PUBLISHED)
+            ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
         $posts = $this->paginator->paginate($query, $page, 10);
 
@@ -112,13 +116,15 @@ class PostService
     public function listByCategory(int $page, string $category): array
     {
         $queryBuilder = $this->postRepository
-                ->createQueryBuilder('p')
-                ->join('p.categories', 'c');
+            ->createQueryBuilder('p')
+            ->join('p.categories', 'c')
+            ->andWhere('p.status = :status')
+            ->setParameter('status', ContentStatusType::PUBLISHED);
 
         if (is_numeric($category)) {
-            $queryBuilder->where('c.id = :category');
+            $queryBuilder->andWhere('c.id = :category');
         } else {
-            $queryBuilder->where('c.slug = :category');
+            $queryBuilder->andWhere('c.slug = :category');
         }
         $queryBuilder
             ->setParameter('category', $category)
@@ -142,12 +148,14 @@ class PostService
     {
         $queryBuilder = $this->postRepository
             ->createQueryBuilder('p')
-            ->join('p.tags', 't');
+            ->join('p.tags', 't')
+            ->andWhere('p.status = :status')
+            ->setParameter('status', ContentStatusType::PUBLISHED);
 
         if (is_numeric($tag)) {
-            $queryBuilder->where('t.id = :tag');
+            $queryBuilder->andWhere('t.id = :tag');
         } else {
-            $queryBuilder->where('t.slug = :tag');
+            $queryBuilder->andWhere('t.slug = :tag');
         }
         $queryBuilder
             ->setParameter('tag', $tag)
@@ -158,24 +166,6 @@ class PostService
         return $this->addCommonModel([
             'posts' => $posts
         ]);
-    }
-
-    /**
-     * Post a comment to a post.
-     *
-     * @param int $postId The post identifier.
-     * @param Comment $comment The comment.
-     */
-    public function postComment(int $postId, Comment $comment): void
-    {
-        /** @var Post $post */
-        $post = $this->postRepository->find($postId);
-        if ($post === null) {
-            throw new NotFoundHttpException("Post with id {$postId} not found.");
-        }
-        $comment->setPost($post);
-        $this->entityManager->persist($comment);
-        $this->entityManager->flush();
     }
 
     /**
@@ -201,6 +191,24 @@ class PostService
     }
 
     /**
+     * Post a comment to a post.
+     *
+     * @param int $postId The post identifier.
+     * @param Comment $comment The comment.
+     */
+    public function postComment(int $postId, Comment $comment): void
+    {
+        /** @var Post $post */
+        $post = $this->postRepository->find($postId);
+        if ($post === null) {
+            throw new NotFoundHttpException("Post with id {$postId} not found.");
+        }
+        $comment->setPost($post);
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
+    }
+
+    /**
      * Add the common model elements to the page.
      *
      * @param array $model The page model.
@@ -208,7 +216,7 @@ class PostService
      */
     private function addCommonModel(array $model): array
     {
-        $pages = $this->pageRepository->findBy([], ['order' => 'ASC']);
+        $pages = $this->pageRepository->findBy(['status' => ContentStatusType::PUBLISHED], ['order' => 'ASC']);
         $archives = $this->postRepository->countByMonth();
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
 

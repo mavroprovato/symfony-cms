@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -32,6 +33,12 @@ abstract class Content
      * @ORM\Column(name="content", type="text")
      */
     private $content;
+
+    /**
+     * @ORM\Column(name="status", type="ContentStatusType", nullable=false)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\ContentStatusType")
+     */
+    private $status;
 
     /**
      * @var string
@@ -112,6 +119,29 @@ abstract class Content
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the status.
+     *
+     * @return string The content.
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the status.
+     *
+     * @param string $status The status.
+     * @return Content The content.
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\DBAL\Types\ContentStatusType;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\Tag;
@@ -41,6 +42,7 @@ class GenerateDataCommand extends ContainerAwareCommand
      * @param OutputInterface $output The command output interface.
      * @return int
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
@@ -92,6 +94,7 @@ incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostr
 aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
 nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
 laborum.');
+            $post->setStatus(ContentStatusType::PUBLISHED);
             $post->setPublishedAt($this->randomDateTime($startDate, $endDate));
             // Set post tags
             $postTags = array_rand(array_values($tags), min(3, count($tags)));
@@ -119,6 +122,7 @@ laborum.');
      * @param \DateTime $startDate The minimum date.
      * @param \DateTime $endDate The maximum date.
      * @return \DateTime The random date.
+     * @throws \Exception
      */
     private function randomDateTime(\DateTime $startDate, \DateTime $endDate): \DateTime
     {

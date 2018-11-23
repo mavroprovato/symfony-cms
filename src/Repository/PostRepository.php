@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DBAL\Types\ContentStatusType;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -28,6 +29,8 @@ class PostRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('YEAR(c.publishedAt) AS year, MONTH(c.publishedAt) AS month, COUNT(c) as count')
+            ->where('c.status = :status')
+            ->setParameter('status', ContentStatusType::PUBLISHED)
             ->groupBy('year, month')
             ->addOrderBy('year', 'DESC')
             ->addOrderBy('month', 'DESC')
