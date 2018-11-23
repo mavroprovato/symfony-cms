@@ -41,13 +41,12 @@ class GenerateDataCommand extends ContainerAwareCommand
      * @param InputInterface $input The command input interface.
      * @param OutputInterface $output The command output interface.
      * @return int
-     * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io = new SymfonyStyle($input, $output);
-        $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
+        $entityManager = $this->getContainer()->get('doctrine')->getManager();
         // Parse the count option
         if (intval($input->getOption('count')) == 0) {
             $io->error("Count should be a positive integer");

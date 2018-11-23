@@ -33,12 +33,11 @@ class GenerateTaxonomyCommand extends ContainerAwareCommand
      * @param InputInterface $input The command input interface.
      * @param OutputInterface $output The command output interface.
      * @return int
-     * @throws \Doctrine\ORM\ORMException
      */
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io = new SymfonyStyle($input, $output);
-        $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
+        $entityManager = $this->getContainer()->get('doctrine')->getManager();
 
         for ($i = 1; $i <= 5; $i++) {
             $tag = new Tag();
