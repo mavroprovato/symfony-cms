@@ -17,32 +17,11 @@
     <meta name="theme-color" content="#ffffff">
 
     {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/login.css') }}">
     {% endblock %}
 </head>
 <body>
-{% block header %}
-{{ include('header.html.twig') }}
-{% endblock %}
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            {% block body %}{% endblock %}
-        </div>
-        <div class="col-md-4">
-            {{ include('sidebar.html.twig') }}
-        </div>
-    </div>
-</div>
-
-<footer class="py-5 bg-dark">
-{% block footer %}
-    {{ include('footer.html.twig') }}
-{% endblock %}
-</footer>
-{% block javascripts %}
-    <script src="{{ asset('build/app.js') }}"></script>
-{% endblock %}
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
 </body>
 </html>
