@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PostService;
+use Eko\FeedBundle\Feed\FeedManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,14 +18,19 @@ class PostListController extends Controller
     /** @var PostService The post service */
     private $postService;
 
+    /** @var FeedManager The feedManager */
+    private $feedManager;
+
     /**
      * Create the controller.
      *
      * @param PostService $postService The post service.
+     * @param FeedManager $feedManager The feed manager.
      */
-    public function __construct(PostService $postService)
+    public function __construct(PostService $postService, FeedManager $feedManager)
     {
         $this->postService = $postService;
+        $this->feedManager = $feedManager;
     }
 
     /**
@@ -82,6 +88,7 @@ class PostListController extends Controller
      * @param string|null $month The page month. If null, all the posts in the year are included.
      * @param string|null $day The post day. If null, all the posts in the day are included.
      * @return Response The HTTP response.
+     * @throws \Exception
      */
     public function byDate(string $year = null, string $month = null, string $day = null, string $page = '1'): Response
     {
@@ -141,5 +148,23 @@ class PostListController extends Controller
         return $this->render('posts.html.twig', $this->postService->listByTag(
             intval($page), $tag
         ));
+    }
+
+    /**
+     * Display the post feed.
+     *
+     * @Route(
+     *     path="/feed",
+     *     name="posts_feed",
+     *     methods={"GET"},
+     * )
+     */
+    public function feed(): Response
+    {
+        $posts = $this->postService->getFeedItems();
+        $feed = $this->feedManager->get('post');
+        $feed->addFromArray($posts);
+
+        return new Response($feed->render('atom'));
     }
 }

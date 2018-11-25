@@ -169,6 +169,16 @@ class PostService
     }
 
     /**
+     * Return the posts to include to the feed list.
+     *
+     * @return array The posts to include to the feed list.
+     */
+    public function getFeedItems(): array
+    {
+        return $this->postRepository->findBy(['status' => ContentStatusType::PUBLISHED], ['publishedAt' => 'DESC'], 10);
+    }
+
+    /**
      * Return the model of the post page.
      *
      * @param string $post The post slug or id.

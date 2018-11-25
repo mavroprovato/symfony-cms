@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eko\FeedBundle\Item\Writer\RoutedItemInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Comment on a post
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
-class Comment
+class Comment implements RoutedItemInterface
 {
     /**
      * @var int
@@ -205,5 +206,67 @@ class Comment
         $this->post = $post;
 
         return $this;
+    }
+
+    /**
+     * This method returns feed item title.
+     *
+     * @return string
+     */
+    public function getFeedItemTitle()
+    {
+        return 'Comment';
+    }
+
+    /**
+     * This method returns feed item description (or content).
+     *
+     * @return string
+     */
+    public function getFeedItemDescription()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * This method returns the name of the route.
+     *
+     * @return string
+     */
+    public function getFeedItemRouteName()
+    {
+        return 'post';
+    }
+
+    /**
+     * This method returns the parameters for the route.
+     *
+     * @return array
+     */
+    public function getFeedItemRouteParameters()
+    {
+        return [
+            'post' => $this->getPost()->getSlug() === null ? $this->getPost()->getId() : $this->getPost()->getSlug()
+        ];
+    }
+
+    /**
+     * This method returns the anchor to be appended on this item's url.
+     *
+     * @return string The anchor, without the "#"
+     */
+    public function getFeedItemUrlAnchor()
+    {
+        return 'comment-' . $this->id;
+    }
+
+    /**
+     * This method returns item publication date.
+     *
+     * @return \DateTime
+     */
+    public function getFeedItemPubDate()
+    {
+        return $this->createdAt;
     }
 }

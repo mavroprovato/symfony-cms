@@ -1,0 +1,21 @@
+# Full configuration: https://github.com/eko/FeedBundle
+services:
+    # alias to allow this type to be autowired
+    Eko\FeedBundle\Feed\FeedManager: '@eko_feed.feed.manager'
+
+eko_feed:
+    feeds:
+        post:
+            title:       'Entries RSS'
+            description: 'Entries RSS'
+            link:
+                route_name: posts_feed
+            encoding:    'utf-8'
+            author:      'mavroprovato'
+        comment:
+            title:       'Entries RSS'
+            description: 'Entries RSS'
+            link:
+                route_name: comments_feed
+            encoding:    'utf-8'
+            author:      'mavroprovato'
