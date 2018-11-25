@@ -16,11 +16,11 @@
     <div class="card-body">
         <h2 class="card-title"><a href="{{ postUrl }}">{{ post.title }}</a></h2>
         <p class="card-text">{{ post.content }}</p>
-        <a href="{{ postUrl }}" class="btn btn-primary">Read More &rarr;</a>
+        <a href="{{ postUrl }}" class="btn btn-primary">{% trans %}post.read.more{% endtrans %}</a>
     </div>
     <div class="card-footer text-muted">
-        <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ post.publishedAt | date() }}</span>
-        <span>&nbsp;<i class="fa fa-tag"></i>&nbsp;Tagged with:</span>
+        <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp{% trans %}post.published.at{% endtrans %} {{ post.publishedAt | date() }}</span>
+        <span>&nbsp;<i class="fa fa-tag"></i>&nbsp;{% trans %}post.tags{% endtrans %}</span>
         {% for tag in post.tags %}
             <a href="{% if tag.slug is null%}{{ path('posts_tag', {'tag': tag.id}) }}{% else %}{{ path('posts_tag', {'tag': tag.slug}) }}{% endif %}">{{ tag.name }}</a>
         {% endfor %}
@@ -30,10 +30,14 @@
 <ul class="pagination justify-content-center mb-4">
     {% set pagination = posts.paginationData %}
     <li class="page-item{% if pagination.current == pagination.last %} disabled{% endif %}">
-        <a class="page-link" href="{% if pagination.current == pagination.last %}#{% else %}{{ path('posts_page', {'page': pagination.next}) }}{% endif %}">&larr; Older</a>
+        <a class="page-link" href="{% if pagination.current == pagination.last %}#{% else %}{{ path('posts_page', {'page': pagination.next}) }}{% endif %}">
+            {% trans %}post.list.older{% endtrans %}
+        </a>
     </li>
     <li class="page-item{% if pagination.current == pagination.first %} disabled{% endif %}">
-        <a class="page-link" href="{% if pagination.current == pagination.first %}#{% else %}{{ path('posts_page', {'page': pagination.previous}) }}{% endif %}">Newer &rarr;</a>
+        <a class="page-link" href="{% if pagination.current == pagination.first %}#{% else %}{{ path('posts_page', {'page': pagination.previous}) }}{% endif %}">
+            {% trans %}post.list.newer{% endtrans %}
+        </a>
     </li>
 </ul>
 {% endblock %}

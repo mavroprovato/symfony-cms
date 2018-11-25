@@ -4,12 +4,12 @@
 <h1 class="mt-4">{{ post.title }}</h1>
 <hr>
 <p>
-    <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;Posted on {{ post.publishedAt | date() }}</span>
+    <span>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;{% trans %}post.published.at{% endtrans %} {{ post.publishedAt | date() }}</span>
 </p>
 <hr>
 <span>{{ post.content }}</span>
 <hr>
-<h5>Comments:</h5>
+<h5>{% trans %}post.comment.list{% endtrans %}</h5>
 {% for comment in post.comments %}
     <div id="comment-{{ comment.id }}" class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
@@ -21,7 +21,7 @@
     </div>
 {% endfor %}
 <div class="card my-4">
-    <h5 class="card-header">Leave a comment:</h5>
+    <h5 class="card-header">{% trans %}post.comment.leaveComment{% endtrans %}</h5>
     <div class="card-body">
         {{ form_start(commentForm) }}
             {{ form_widget(commentForm) }}

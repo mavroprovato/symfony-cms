@@ -1,0 +1,39 @@
+
+search:
+    title:          Search
+    placeholder:    Search for...
+    perform:        Go!
+
+archives:
+    title:  Archives
+
+categories:
+    title:  Categories
+
+meta:
+    title:  Meta
+    login:  Login
+    logout: Logout
+    entries:
+        feed:   Entries RSS
+    comments:
+        feed:   Comments RSS
+
+post:
+    read:
+        more:   Read More →
+    published:
+        at: Posted on
+    tags: Tagged with
+    list:
+        newer:  → Newer
+        older:  ← Older
+    comment:
+        list:           'Comments:'
+        leaveComment:   'Leave a comment:'
+        name:           Name
+        email:          Email
+        webSite:        Web site
+
+footer:
+    copyright:  Copyright © mavroprovato 2018

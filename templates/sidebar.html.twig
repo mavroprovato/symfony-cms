@@ -1,18 +1,18 @@
 <div class="card my-4">
-    <h5 class="card-header">Search</h5>
+    <h5 class="card-header">{% trans %}search.title{% endtrans %}</h5>
     <div class="card-body">
         <form action="/search" method="get">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="{% trans %}search.placeholder{% endtrans %}">
                 <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="button">Go!</button>
+                      <button class="btn btn-secondary" type="button">{% trans %}search.perform{% endtrans %}</button>
                 </span>
             </div>
         </form>
     </div>
 </div>
 <div class="card my-4">
-    <h5 class="card-header">Archives</h5>
+    <h5 class="card-header">{% trans %}archives.title{% endtrans %}</h5>
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
@@ -30,7 +30,7 @@
     </div>
 </div>
 <div class="card my-4">
-    <h5 class="card-header">Cateogries</h5>
+    <h5 class="card-header">{% trans %}categories.title{% endtrans %}</h5>
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
@@ -46,20 +46,20 @@
     </div>
 </div>
 <div class="card my-4">
-    <h5 class="card-header">Meta</h5>
+    <h5 class="card-header">{% trans %}meta.title{% endtrans %}</h5>
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
                 <ul class="list-unstyled mb-0">
                     <li>
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <a href="{{ path('fos_user_security_logout') }}">Logout</a>
+                        <a href="{{ path('fos_user_security_logout') }}">{% trans %}meta.logout{% endtrans %}</a>
                         {% else %}
-                        <a href="{{ path('fos_user_security_login') }}">Login</a>
+                        <a href="{{ path('fos_user_security_login') }}">{% trans %}meta.login{% endtrans %}</a>
                     </li>
                 {% endif %}
-                    <li><a href="{{ path('posts_feed') }}">Entries RSS</a></li>
-                    <li><a href="{{ path('comments_feed') }}">Comments RSS</a></li>
+                    <li><a href="{{ path('posts_feed') }}">{% trans %}meta.entries.feed{% endtrans %}</a></li>
+                    <li><a href="{{ path('comments_feed') }}">{% trans %}meta.comments.feed{% endtrans %}</a></li>
             </div>
         </div>
     </div>
