@@ -31,6 +31,9 @@ class PostService
     /** @var CategoryRepository The category repository. */
     private $categoryRepository;
 
+    /** @var ConfigurationParameterService The configuration parameter service. */
+    private $configurationParameterService;
+
     /** @var PaginatorInterface The paginator service */
     private $paginator;
 
@@ -49,19 +52,21 @@ class PostService
      * @param PostRepository $postRepository The post repository.
      * @param PageRepository $pageRepository The page repository.
      * @param CategoryRepository $categoryRepository The category repository.
+     * @param ConfigurationParameterService $configurationParameterService The configuration parameter service.
      * @param PaginatorInterface $paginator The paginator interface.
      * @param RouterInterface $router The router.
      * @param FormFactoryInterface $formFactory The form factory.
      * @param EntityManagerInterface $entityManager The entity manager.
      */
-    public function __construct(PostRepository $postRepository, PageRepository $pageRepository,
-                                CategoryRepository $categoryRepository, PaginatorInterface $paginator,
-                                RouterInterface $router, FormFactoryInterface $formFactory,
-                                EntityManagerInterface $entityManager)
+    public function __construct(
+        PostRepository $postRepository, PageRepository $pageRepository, CategoryRepository $categoryRepository,
+        ConfigurationParameterService $configurationParameterService, PaginatorInterface $paginator,
+        RouterInterface $router, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->configurationParameterService = $configurationParameterService;
         $this->paginator = $paginator;
         $this->router = $router;
         $this->formFactory = $formFactory;
@@ -99,7 +104,8 @@ class PostService
             ->setParameter('status', ContentStatusType::PUBLISHED)
             ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $posts = $this->paginator->paginate($query, $page, 10);
+        $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+        $posts = $this->paginator->paginate($query, $page, $postsPerPage);
 
         return $this->addCommonModel([
             'posts' => $posts
@@ -130,7 +136,8 @@ class PostService
             ->setParameter('category', $category)
             ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $posts = $this->paginator->paginate($query, $page, 10);
+        $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+        $posts = $this->paginator->paginate($query, $page, $postsPerPage);
 
         return $this->addCommonModel([
             'posts' => $posts
@@ -161,7 +168,8 @@ class PostService
             ->setParameter('tag', $tag)
             ->orderBy('p.publishedAt', 'DESC');
         $query = $queryBuilder->getQuery();
-        $posts = $this->paginator->paginate($query, $page, 10);
+        $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+        $posts = $this->paginator->paginate($query, $page, $postsPerPage);
 
         return $this->addCommonModel([
             'posts' => $posts
@@ -175,7 +183,10 @@ class PostService
      */
     public function getFeedItems(): array
     {
-        return $this->postRepository->findBy(['status' => ContentStatusType::PUBLISHED], ['publishedAt' => 'DESC'], 10);
+        $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+        return $this->postRepository->findBy(
+            ['status' => ContentStatusType::PUBLISHED], ['publishedAt' => 'DESC'], $postsPerPage
+        );
     }
 
     /**
