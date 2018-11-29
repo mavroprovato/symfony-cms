@@ -242,7 +242,8 @@ class PostService
         $categories = $this->categoryRepository->findBy([], ['name' => 'ASC']);
 
         return array_merge($model, [
-            'pages' => $pages, 'archives' => $archives, 'categories' => $categories
+            'pages' => $pages, 'archives' => $archives, 'categories' => $categories,
+            'config' => $this->configurationParameterService->all()
         ]);
     }
 

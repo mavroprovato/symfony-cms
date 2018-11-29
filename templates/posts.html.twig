@@ -2,8 +2,8 @@
 
 {% block body %}
 <h1 class="my-4">
-    <span>Page Heading</span>
-    <small>Secondary Text</small>
+    <span>{{ config.SITE_TITLE }}</span>
+    <small>{{ config.SITE_SUBTITLE }}</small>
 </h1>
 
 {% for post in posts %}
