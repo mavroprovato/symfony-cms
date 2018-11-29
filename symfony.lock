@@ -110,6 +110,9 @@
             "ref": "18200f71f86a12023fcd952546dad61850806c22"
         }
     },
+    "elasticsearch/elasticsearch": {
+        "version": "v6.0.1"
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
@@ -122,11 +125,26 @@
             "ref": "fab86661c13bc12e4f14f706c86af09912d55bfb"
         }
     },
+    "friendsofsymfony/elastica-bundle": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "3f73f240ee0c3719e89f1c994ce66904e2ef84f6"
+        }
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.36"
+    },
+    "guzzlehttp/ringphp": {
+        "version": "1.1.1"
+    },
+    "guzzlehttp/streams": {
+        "version": "3.0.0"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -148,6 +166,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
+    },
+    "pagerfanta/pagerfanta": {
+        "version": "v1.1.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -172,6 +193,12 @@
     },
     "psr/simple-cache": {
         "version": "1.0.0"
+    },
+    "react/promise": {
+        "version": "v2.7.0"
+    },
+    "ruflin/elastica": {
+        "version": "6.0.2"
     },
     "sensio/framework-extra-bundle": {
         "version": "4.0",
