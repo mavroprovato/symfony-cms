@@ -86,19 +86,26 @@ class PostService
     public function list(int $page = 1, int $year = null, int $month = null, int $day = null): array
     {
         // Fetch contents by publication date
-        $queryBuilder = $this->postRepository->createQueryBuilder('p');
-        list($startDate, $endDate) = $this->getStartEnd($year, $month, $day);
+        $queryBuilder = $this->postRepository
+            ->createQueryBuilder('p')
+            ->addSelect('t')
+            ->leftJoin('p.tags', 't');
 
+        // Add publication date restrictions
+        list($startDate, $endDate) = $this->getStartEnd($year, $month, $day);
         if ($startDate !== null && $endDate != null) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->gte('p.publishedAt', ':startDate'),
-                    $queryBuilder->expr()->lt('p.publishedAt', ':endDate')
+            $queryBuilder
+                ->andWhere(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->gte('p.publishedAt', ':startDate'),
+                        $queryBuilder->expr()->lt('p.publishedAt', ':endDate')
+                    )
                 )
-            );
-            $queryBuilder->setParameter('startDate', $startDate);
-            $queryBuilder->setParameter('endDate', $endDate);
+                ->setParameter('startDate', $startDate)
+                ->setParameter('endDate', $endDate);
         }
+
+        // Get all the published posts ordered by publication date
         $queryBuilder = $queryBuilder
             ->andWhere('p.status = :status')
             ->setParameter('status', ContentStatusType::PUBLISHED)
