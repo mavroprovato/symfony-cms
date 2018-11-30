@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\ElasticaBundle\Manager\RepositoryManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,6 +47,9 @@ class PostService
     /** @var EntityManagerInterface The entity manager. */
     private $entityManager;
 
+    /** @var RepositoryManagerInterface The repository manager. */
+    private $repositoryManager;
+
     /**
      * Create the post service.
      *
@@ -57,11 +61,13 @@ class PostService
      * @param RouterInterface $router The router.
      * @param FormFactoryInterface $formFactory The form factory.
      * @param EntityManagerInterface $entityManager The entity manager.
+     * @param RepositoryManagerInterface $repositoryManager
      */
     public function __construct(
         PostRepository $postRepository, PageRepository $pageRepository, CategoryRepository $categoryRepository,
         ConfigurationParameterService $configurationParameterService, PaginatorInterface $paginator,
-        RouterInterface $router, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager)
+        RouterInterface $router, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager,
+        RepositoryManagerInterface $repositoryManager)
     {
         $this->postRepository = $postRepository;
         $this->pageRepository = $pageRepository;
@@ -71,6 +77,7 @@ class PostService
         $this->router = $router;
         $this->formFactory = $formFactory;
         $this->entityManager = $entityManager;
+        $this->repositoryManager = $repositoryManager;
     }
 
     /**
@@ -184,6 +191,23 @@ class PostService
     }
 
     /**
+     * Perform a full text query to the posts.
+     *
+     * @param string $q The full text query term.
+     * @return array The model for the page.
+     */
+    public function search(string $q): array
+    {
+        $query = $this->repositoryManager->getRepository(Post::class)->createPaginatorAdapter($q);
+        $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+        $posts = $this->paginator->paginate($query, 1, $postsPerPage);
+
+        return $this->addCommonModel([
+            'posts' => $posts
+        ]);
+    }
+
+    /**
      * Return the posts to include to the feed list.
      *
      * @return array The posts to include to the feed list.
@@ -191,6 +215,7 @@ class PostService
     public function getFeedItems(): array
     {
         $postsPerPage = $this->configurationParameterService->get(ConfigurationParameterService::POSTS_PER_PAGE);
+
         return $this->postRepository->findBy(
             ['status' => ContentStatusType::PUBLISHED], ['publishedAt' => 'DESC'], $postsPerPage
         );

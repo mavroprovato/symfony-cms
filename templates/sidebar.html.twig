@@ -1,11 +1,11 @@
 <div class="card my-4">
     <h5 class="card-header">{% trans %}search.title{% endtrans %}</h5>
     <div class="card-body">
-        <form action="/search" method="get">
+        <form action="{{ path('posts_search') }}" method="get">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="{% trans %}search.placeholder{% endtrans %}">
+                <input type="text" name="q" class="form-control" placeholder="{% trans %}search.placeholder{% endtrans %}">
                 <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="button">{% trans %}search.perform{% endtrans %}</button>
+                      <button class="btn btn-secondary" type="submit">{% trans %}search.perform{% endtrans %}</button>
                 </span>
             </div>
         </form>

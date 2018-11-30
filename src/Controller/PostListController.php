@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\PostService;
 use Eko\FeedBundle\Feed\FeedManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -148,6 +149,23 @@ class PostListController extends Controller
         return $this->render('posts.html.twig', $this->postService->listByTag(
             intval($page), $tag
         ));
+    }
+
+    /**
+     * Search the posts.
+     *
+     * @Route(
+     *     path="/search",
+     *     name="posts_search",
+     *     methods={"GET"},
+     * )
+     *
+     * @param Request $request The HTTP request.
+     * @return Response The response.
+     */
+    public function find(Request $request): Response
+    {
+        return $this->render('posts.html.twig', $this->postService->search($request->get('q')));
     }
 
     /**
