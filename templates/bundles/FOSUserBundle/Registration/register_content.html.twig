@@ -1,0 +1,27 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="card p-4">
+    <div class="card-body">
+        <h1>{{ 'registration.register' | trans }}</h1>
+        <p class="text-muted">{{ 'registration.description' | trans }}</p>
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register')}) }}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-user"></i></span></div>
+                {{ form_widget(form.username, {'attr': {'placeholder': 'registration.username'}}) }}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">@</span></div>
+                {{ form_widget(form.email, {'attr': {'placeholder': 'registration.email'}}) }}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-lock"></i></span></div>
+                {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'registration.password'}}) }}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="icon-lock"></i></span></div>
+                {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'registration.password.repeat'}}) }}
+            </div>
+            <button class="btn btn-block btn-primary" type="submit">{{ 'registration.submit' | trans }}</button>
+        {{ form_end(form) }}
+    </div>
+</div>

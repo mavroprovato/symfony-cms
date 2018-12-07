@@ -1,4 +1,7 @@
 security:
+    login:
+        username_or_email: Username or email
+
     singin:
         login:  Login
         signin: Sing in to your account
@@ -7,6 +10,17 @@ security:
         signup:         Sign up
         description:    In order to create a new account, click the button below to register
         register:       Register Now!
+        forgotpassword: Forgot password?
 
     forgotpassword:
-        label:  Forgot password?
+        retrieve:       Retrieve password
+        description:    Enter your user name or email in the form below in order to retrieve your password
+        submit:         Send password
+
+registration:
+    register:           Register
+    description:        Create your account
+    username:           Username
+    email:              Email
+    password:           Password
+    password.repeat:    Repeat password
