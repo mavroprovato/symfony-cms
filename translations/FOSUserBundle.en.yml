@@ -1,0 +1,12 @@
+security:
+    singin:
+        login:  Login
+        signin: Sing in to your account
+
+    signup:
+        signup:         Sign up
+        description:    In order to create a new account, click the button below to register
+        register:       Register Now!
+
+    forgotpassword:
+        label:  Forgot password?

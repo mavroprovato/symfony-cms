@@ -20,8 +20,12 @@
         <link rel="stylesheet" href="{{ asset('build/login.css') }}">
     {% endblock %}
 </head>
-<body>
-    {% block fos_user_content %}
-    {% endblock fos_user_content %}
+<body class="app flex-row align-items-center">
+<div class="container">
+    <div class="row justify-content-center">
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+    </div>
+</div>
 </body>
 </html>
