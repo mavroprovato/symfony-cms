@@ -14,6 +14,9 @@ security:
 
     forgotpassword:
         retrieve:       Retrieve password
+        reset:
+            title:          Reset password
+            description:    Enter a new password
         description:    Enter your user name or email in the form below in order to retrieve your password
         submit:         Send password
 

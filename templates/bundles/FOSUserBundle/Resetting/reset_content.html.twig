@@ -1,0 +1,29 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<div class="card p-4">
+    <div class="card-body">
+        <h1>{{ 'security.forgotpassword.reset.title' | trans }}</h1>
+        <p class="text-muted">{{ 'security.forgotpassword.reset.description' | trans }}</p>
+        {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="icon-lock"></i></span></div>
+            {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'registration.password'}}) }}
+            {{ form_errors(form.plainPassword.first) }}
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="icon-lock"></i></span></div>
+            {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'registration.password.repeat'}}) }}
+            {{ form_errors(form.plainPassword.second) }}
+        </div>
+        <div class="row">
+            <div class="col-12 text-right">
+                <input type="submit" class="btn btn-primary" value="{{ 'resetting.reset.submit' | trans }}" />
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
