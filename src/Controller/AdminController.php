@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller
  * @Route(path = "/admin")
  */
-class AdminController
+class AdminController extends Controller
 {
     /**
      * Display the admin dashboard.
@@ -22,8 +23,8 @@ class AdminController
      *     methods={"GET"},
      * )
      */
-    public function index(): Response
+    public function dashboard(): Response
     {
-        return new Response('OK');
+        return $this->render('admin/dashboard.html.twig');
     }
 }

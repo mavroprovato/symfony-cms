@@ -1,4 +1,4 @@
-var Encore = require('@symfony/webpack-encore');
+let Encore = require('@symfony/webpack-encore');
 
 Encore
     // directory where compiled assets will be stored
@@ -11,6 +11,7 @@ Encore
     // Main application
     .addEntry('app', './assets/js/app.js')
     .addEntry('login', './assets/js/login.js')
+    .addEntry('admin', './assets/js/admin.js')
 
     // Feature configuration
     .cleanupOutputBeforeBuild()
