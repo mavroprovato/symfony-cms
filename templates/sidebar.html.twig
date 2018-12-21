@@ -56,10 +56,16 @@
                         <a href="{{ path('fos_user_security_logout') }}">{% trans %}meta.logout{% endtrans %}</a>
                         {% else %}
                         <a href="{{ path('fos_user_security_login') }}">{% trans %}meta.login{% endtrans %}</a>
+                        {% endif %}
                     </li>
-                {% endif %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li>
+                        <a href="{{ path('admin_index') }}">{% trans %}meta.admin{% endtrans %}</a>
+                    </li>
+                    {% endif %}
                     <li><a href="{{ path('posts_feed') }}">{% trans %}meta.entries.feed{% endtrans %}</a></li>
                     <li><a href="{{ path('comments_feed') }}">{% trans %}meta.comments.feed{% endtrans %}</a></li>
+                </ul>
             </div>
         </div>
     </div>
