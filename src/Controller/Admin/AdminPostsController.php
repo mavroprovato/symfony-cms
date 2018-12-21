@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Controller for administration
+ * Controller for administrating posts
  *
  * @package App\Controller
- * @Route(path = "/admin")
+ * @Route(path = "/admin/posts")
  */
-class AdminController extends Controller
+class AdminPostsController extends Controller
 {
+
     /**
-     * Display the admin dashboard.
+     * Display the admin post list.
      *
      * @Route(
      *     path="/",
-     *     name="admin_index",
+     *     name="admin_posts",
      *     methods={"GET"},
      * )
      */
-    public function dashboard(): Response
+    public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        return $this->render('admin/posts.html.twig');
     }
 }

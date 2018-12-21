@@ -36,5 +36,18 @@ post:
         email:          Email
         webSite:        Web site
 
+admin:
+    dashboard:  Dashboard
+    posts:
+        title:  Posts
+    pages:
+        title:  Pages
+    comments:
+        title:  Comments
+    users:
+        title:  Users
+    settings:
+        title:  Settings
+
 footer:
     copyright:  Copyright © mavroprovato 2018
