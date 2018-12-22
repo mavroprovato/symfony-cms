@@ -28,4 +28,46 @@ class AdminPostsController extends Controller
     {
         return $this->render('admin/posts.html.twig');
     }
+
+    /**
+     * Display the admin new post page.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_posts_new",
+     *     methods={"GET"},
+     * )
+     */
+    public function new(): Response
+    {
+        return $this->render('admin/posts.html.twig');
+    }
+
+    /**
+     * Display the admin post category list.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_posts_categories",
+     *     methods={"GET"},
+     * )
+     */
+    public function categories(): Response
+    {
+        return $this->render('admin/posts.html.twig');
+    }
+
+    /**
+     * Display the admin post tag list.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_posts_tags",
+     *     methods={"GET"},
+     * )
+     */
+    public function tags(): Response
+    {
+        return $this->render('admin/posts.html.twig');
+    }
 }

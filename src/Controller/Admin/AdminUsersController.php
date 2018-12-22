@@ -28,4 +28,32 @@ class AdminUsersController extends Controller
     {
         return $this->render('admin/users.html.twig');
     }
+
+    /**
+     * Display the admin add user page.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_users_new",
+     *     methods={"GET"},
+     * )
+     */
+    public function new(): Response
+    {
+        return $this->render('admin/users.html.twig');
+    }
+
+    /**
+     * Display the admin user profile page.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_users_profile",
+     *     methods={"GET"},
+     * )
+     */
+    public function profile(): Response
+    {
+        return $this->render('admin/users.html.twig');
+    }
 }

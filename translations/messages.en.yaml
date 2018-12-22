@@ -39,15 +39,22 @@ post:
 admin:
     dashboard:  Dashboard
     posts:
-        title:  Posts
+        title:      Posts
+        new:        Add Post
+        categories: Categories
+        tags:       Tags
     pages:
-        title:  Pages
+        title:      Pages
+        new:        Add New
     comments:
-        title:  Comments
+        title:      Comments
     users:
-        title:  Users
+        title:      Users
+        new:        Add New
+        profile:    Your Profile
     settings:
-        title:  Settings
+        title:      Settings
+        general:    General
 
 footer:
     copyright:  Copyright © mavroprovato 2018

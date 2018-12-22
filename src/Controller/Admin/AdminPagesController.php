@@ -29,4 +29,17 @@ class AdminPagesController extends Controller
         return $this->render('admin/pages.html.twig');
     }
 
+    /**
+     * Display the admin new page.
+     *
+     * @Route(
+     *     path="/",
+     *     name="admin_pages_new",
+     *     methods={"GET"},
+     * )
+     */
+    public function new(): Response
+    {
+        return $this->render('admin/pages.html.twig');
+    }
 }

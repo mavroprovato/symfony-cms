@@ -5,30 +5,48 @@
                 <i class="nav-icon icon-speedometer"></i>{% trans %}admin.dashboard{% endtrans %}
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('admin_posts') }}">
+        <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="{{ path('admin_posts') }}">
                 <i class="nav-icon icon-pin"></i>{% trans %}admin.posts.title{% endtrans %}
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_posts') }}">{% trans %}admin.posts.title{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_posts_new') }}">{% trans %}admin.posts.new{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_posts_categories') }}">{% trans %}admin.posts.categories{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_posts_tags') }}">{% trans %}admin.posts.tags{% endtrans %}</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('admin_pages') }}">
+        <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="{{ path('admin_pages') }}">
                 <i class="nav-icon icon-doc"></i>{% trans %}admin.pages.title{% endtrans %}
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_pages') }}">{% trans %}admin.pages.title{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_pages_new') }}">{% trans %}admin.pages.new{% endtrans %}</a></li>
+            </ul>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ path('admin_comments') }}">
                 <i class="nav-icon icon-bubbles"></i>{% trans %}admin.comments.title{% endtrans %}
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('admin_users') }}">
+        <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="{{ path('admin_users') }}">
                 <i class="nav-icon icon-user"></i>{% trans %}admin.users.title{% endtrans %}
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item"><a class="nav-link" href="#">{% trans %}admin.users.title{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">{% trans %}admin.users.new{% endtrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">{% trans %}admin.users.profile{% endtrans %}</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('admin_settings') }}">
+        <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="{{ path('admin_settings') }}">
                 <i class="nav-icon icon-settings"></i>{% trans %}admin.settings.title{% endtrans %}
             </a>
+            <ul class="nav-dropdown-items">
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_settings') }}">{% trans %}admin.settings.general{% endtrans %}</a></li>
+            </ul>
         </li>
     </ul>
 </nav>
